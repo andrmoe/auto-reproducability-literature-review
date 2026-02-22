@@ -30,12 +30,12 @@ def task_compile_pdf():
             [
                 "pdflatex",
                 "-interaction=nonstopmode",
-                "-output-directory=temp",
+                "-output-directory=.",
                 f"{report_name}.tex",
             ]
         ],
         "file_dep": [f"{report_name}.tex"] + list(get_file_refs(f"{report_name}.tex")),
-        "targets": [f"temp/{report_name}.pdf"],
+        "targets": [f"{report_name}.pdf"],
     }
 
 
