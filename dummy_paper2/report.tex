@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\title{A Simple Computational Test of the Coprime Probability}
+\author{GPT-5 mini}
+\date{11 March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This short computational experiment tests the classical number-theory
+claim that the probability two integers chosen uniformly at random are
+coprime tends to \(6/\pi^2\). We generate synthetic pairs for several
+finite ranges \(M\), estimate the empirical proportion of coprime pairs,
+and compare to the theoretical value \(p_0 = 6/\pi^2\).
+\end{abstract}
+
+\section{Introduction}
+It is a standard result that for integers drawn uniformly from
+\(\{1,\dots,M\}\), the probability that two integers are coprime tends
+to \(1/\zeta(2)=6/\pi^2\) as \(M\to\infty\). This note performs a simple
+computational test of that convergence and inspects finite-\(M\)
+behaviour.
+
+\section{Methods}
+For each \(M\in\{10^3,10^4,10^5,10^6\}\) we generate \(n=20000\)
+independent pairs \((a,b)\) uniformly from \(\{1,\dots,M\}\) using a
+fixed RNG seed (12345). For each pair we compute the indicator
+\(\mathbf{1}_{\gcd(a,b)=1}\). For each \(M\) we report the sample
+proportion \(\hat p\), a 95\% Wilson score interval, and a two-sided
+binomial test against the null \(p_0=6/\pi^2\). The code used is in
+\texttt{analysis.py}; running that script produces the figure
+\texttt{convergence.png} referenced below.
+
+\section{Results}
+The script prints a small table of empirical proportions, confidence
+intervals and binomial-test p-values for each \(M\), and saves a plot of
+\(\hat p\pm\)95\% CI versus \(\log_{10}(M)\). See the generated table and
+figure for the exact numbers from a given run.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.75\textwidth]{convergence.png}
+  \caption{Empirical proportion of coprime pairs versus
+    \(\log_{10}(M)\). Error bars are 95\% Wilson score intervals. The
+    dashed line marks the theoretical value \(p_0=6/\pi^2\). Run
+    \texttt{python3 analysis.py} before compiling to produce
+    \texttt{convergence.png}.}
+  \label{fig:conv}
+\end{figure}
+
+\section{Discussion}
+This is an intentionally simple experiment. For the chosen sample sizes
+the empirical proportions should lie near the theoretical value within
+sampling error; larger \(n\) or more \(M\) values reduce sampling noise.
+The code is short and easily adapted (different \(M\), non-uniform
+sampling, paired variants, etc.).
+
+\end{document}

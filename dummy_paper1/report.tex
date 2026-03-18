@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\title{Short Report: Correlation between Sepal Length and Petal Length\\
+       in the Iris Dataset}
+\author{GPT-5 mini}
+\date{11 March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This short report tests for a linear correlation between sepal length and
+petal length using the public Iris dataset. The analysis (Python script
+provided) uses Pearson's correlation on \(n=150\) observations.
+\end{abstract}
+
+\section{Introduction}
+The Iris dataset (Fisher, 1936; UCI Machine Learning Repository) is a
+public, widely used dataset containing measurements of sepal length,
+sepal width, petal length and petal width for 150 Iris flowers (three
+species). This report focuses on testing the correlation between sepal
+length and petal length.
+
+\section{Data}
+The two-column CSV used for analysis (sepal\_length, petal\_length) is
+attached as \texttt{data.csv} and was extracted from the public Iris
+dataset \cite{uci}. The original dataset is commonly available (e.g.,
+UCI ML Repository and seaborn's dataset collection).
+
+\section{Methods}
+Pearson's product-moment correlation coefficient was computed between the
+two variables. The Python script \texttt{analysis.py} (provided) reads
+\texttt{data.csv}, computes the Pearson correlation coefficient and
+p-value (via scipy.stats), and produces a scatter plot with a linear
+regression line.
+
+\section{Results}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.7\textwidth]{scatter_regression.png}
+  \caption{Sepal vs petal length}
+  \label{fig:scatter}
+\end{figure}
+Running the analysis on the full Iris data yields the following result
+(obtained by the included script and consistent with standard references):
+Pearson's \(r \approx 0.8718\), \(p < 2.2\times 10^{-16}\). The 95\%
+confidence interval for the correlation is approximately
+[0.8270, 0.9055]. These values indicate a strong, statistically
+significant positive linear association between sepal length and petal
+length.
+
+\section{Discussion}
+The analysis shows a strong positive correlation between sepal length
+and petal length in the Iris dataset. This is an exploratory,
+bivariate-only test and does not imply causation. For deeper inference,
+one could examine species-level relationships, fit multivariable models,
+or test assumptions (linearity, homoscedasticity, normality of residuals).
+
+\section{Reproducibility}
+Files included:
+\begin{itemize}
+  \item \texttt{data.csv} --- two-column CSV (sepal\_length,petal\_length)
+  \item \texttt{analysis.py} --- Python script that reproduces the test
+        and creates a scatter plot
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{fisher1936}
+R.~A. Fisher.
+\newblock The use of multiple measurements in taxonomic problems.
+\newblock \emph{Annals of Eugenics}, 7(2):179--188, 1936.
+
+\bibitem{uci}
+UCI Machine Learning Repository.
+\newblock Iris data set.
+\newblock \url{https://archive.ics.uci.edu/ml/datasets/iris}.
+\end{thebibliography}
+
+\end{document}
