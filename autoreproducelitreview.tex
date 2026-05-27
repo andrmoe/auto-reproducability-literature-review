@@ -71,6 +71,7 @@ ferrag2026llmreasoningautonomousai,
 wang2025}
 
 \section{Background}
+
 \newpage
 \section{Method}
 Staring with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence.
@@ -88,27 +89,53 @@ These factors were used to decide if a paper was "not relevant", "relevant" or "
 \item Does the paper's abstract relate to any of the categories. Then it's relevant. If not, then not relevant.
 \item Some papers are borderline. They are listed here [TODO: compile list]
 }
-\section{Analysis}
 
 \subsection{Categories}
 \itemize{
-\item Terminology \newline Contributes by defining terminology related to reproducibility.
-\item Prepub reproducibility \newline Techniques that authors can use to make their research more reproducible.
-\item Validation \newline Contributes benchmarks or other validation techniques for automatic reproducibility.
-\item Agentic Science \newline AI systems that can conduct scientific tasks autonomously.
-\item Code Repair \newline Systems that automatically repair old code.
-\item Hypothesis Gen \newline Systems that generate scientific hypotheses.
-\item Automatic Software Engineering \newline Systems that can do software engineering tasks autonomously.
-\item Science-specialized LLM \newline LLMs that are fine-tuned to be better at science.
-\item Multi-Agent \newline AI systems which consist of multiple collaborating agents.
-\item Journal policy \newline Papers that describe policies at journals. Mostly related to reproducibility.
-\item Reproducibility survey \newline Papers that survey the reproducibility of a field.
-\item Other
+    \item Terminology \newline Contributes by defining terminology related to reproducibility.
+    \item Prepub reproducibility \newline Techniques that authors can use to make their research more reproducible.
+    \item Validation \newline Contributes benchmarks or other validation techniques for automatic reproducibility.
+    \item Agentic Science \newline AI systems that can conduct scientific tasks autonomously.
+    \item Code Repair \newline Systems that automatically repair old code.
+    \item Hypothesis Gen \newline Systems that generate scientific hypotheses.
+    \item Automatic Software Engineering \newline Systems that can do software engineering tasks autonomously.
+    \item Science-specialized LLM \newline LLMs that are fine-tuned to be better at science.
+    \item Multi-Agent \newline AI systems which consist of multiple collaborating agents.
+    \item Journal policy \newline Papers that describe policies at journals. Mostly related to reproducibility.
+    \item Reproducibility survey \newline Papers that survey the reproducibility of a field.
+    \item Other
 }
+
+\section{Analysis}
 
 \section{Results}
 
+\subsection{Problem statement}
+Artisan "code generation task, where the agent generates a reproduction script that 
+independently reproduces the paper’s reported results based on the code and data given in the artifact."
+\newline
+
+\subsection{Auto reproducibility systems}
+\enumerate{
+    \item Artisan
+    \item SciPredict
+    \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents
+    \item Super
+    \item Comparing Human-Only, AI-Assisted, and AI-Led Teams on Assessing Research Reproducibility in Quantitative Social Science
+    \item Multi-LLM information retrieval pipeline for extracting deep learning methodologies in biodiversity research
+    \item Supporting Artifact Evaluation with LLMs
+}
+
+\subsection{Validation}
+
+Artisan-Bench consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
+The authors do not state why the benchmark has no negative examples. The benchmark has examples in python, java, rust, scala, ocaml and bash.
+
+
+\subsection{False negatives}
 \section{Limitations}
+
+\section{Future Work}
 
 \section{Conclusions}
 
