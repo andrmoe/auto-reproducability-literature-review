@@ -51,7 +51,7 @@
 \section{Abstract}
 
 \section{Introduction}
-Computational experiments are \cite{schoch2023computationalreproducibilitycomputationalsocial}
+Computational experiments are \cite{schoch2023}
 Computational experiments could in principle be automatically reproducible \cite{chirigati2016}
 This is not always true in practice \cite{trisovic2021}
 
@@ -82,29 +82,35 @@ Cited papers from "Very relevant" papers were also assessed.
 Papers that cite "Very relevant" papers were also assessed.
 
 These factors were used to decide if a paper was "not relevant", "relevant" or "very relevant":
-\itemize{
+\begin{itemize}
 \item In which context was this paper cited? If the context is one of the categories, then it is relevant.
 \item If the context is not relevant, then the cited paper is also not relevant. (e.g. a list of papers that form a dataset for auto reproducibility)
 \item Was this paper only cited in the bibliography, and not the main text? Then it is not relevant.
 \item Does the paper's abstract relate to any of the categories. Then it's relevant. If not, then not relevant.
 \item Some papers are borderline. They are listed here [TODO: compile list]
-}
+\end{itemize}
 
 \subsection{Categories}
-\itemize{
+\begin{itemize}
+    \item Previous work \newline Literature reviews or surveys of automatic reproducibility.
+    \item Auto reproducibility \newline Systems that automatically reproduce computational research.
+    \item Research impact \newline Contributes to our understanding of the impact of automated reproducibility.
     \item Terminology \newline Contributes by defining terminology related to reproducibility.
-    \item Prepub reproducibility \newline Techniques that authors can use to make their research more reproducible.
     \item Validation \newline Contributes benchmarks or other validation techniques for automatic reproducibility.
-    \item Agentic Science \newline AI systems that can conduct scientific tasks autonomously.
     \item Code Repair \newline Systems that automatically repair old code.
-    \item Hypothesis Gen \newline Systems that generate scientific hypotheses.
-    \item Automatic Software Engineering \newline Systems that can do software engineering tasks autonomously.
-    \item Science-specialized LLM \newline LLMs that are fine-tuned to be better at science.
-    \item Multi-Agent \newline AI systems which consist of multiple collaborating agents.
-    \item Journal policy \newline Papers that describe policies at journals. Mostly related to reproducibility.
-    \item Reproducibility survey \newline Papers that survey the reproducibility of a field.
+    \item Journal policy \newline Papers that describe policies at journals related to reproducibility.
+    \item Reproducibility survey \newline Papers that survey reproducibility in a field.
     \item Other
-}
+    \item Agentic Science \newline AI systems that can conduct scientific tasks autonomously. [TODO: move to appendix]
+    \item Prepub reproducibility \newline Techniques that authors can use to make their research more reproducible. [TODO: move to appendix]
+    \item Hypothesis Gen \newline Systems that generate scientific hypotheses. [TODO: move to appendix]
+    \item Automatic Software Engineering \newline Systems that can do software engineering tasks autonomously. [TODO: move to appendix]
+    \item Science-specialized LLM \newline LLMs that are fine-tuned to be better at science. [TODO: move to appendix]
+    \item Multi-Agent \newline AI systems which consist of multiple collaborating agents. [TODO: move to appendix]
+    \item Tool calling [TODO: remove]
+    \item Figure reading [TODO: move to appendix]
+    \item Document parsing [TODO: move to appendix]    
+\end{itemize}
 
 \section{Analysis}
 
@@ -114,22 +120,51 @@ These factors were used to decide if a paper was "not relevant", "relevant" or "
 Artisan "code generation task, where the agent generates a reproduction script that 
 independently reproduces the paper’s reported results based on the code and data given in the artifact."
 \newline
+Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Paper2Code \cite{paper2code} for benchmarking.
+
 
 \subsection{Auto reproducibility systems}
-\enumerate{
-    \item Artisan
-    \item SciPredict
-    \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents
-    \item Super
-    \item Comparing Human-Only, AI-Assisted, and AI-Led Teams on Assessing Research Reproducibility in Quantitative Social Science
-    \item Multi-LLM information retrieval pipeline for extracting deep learning methodologies in biodiversity research
-    \item Supporting Artifact Evaluation with LLMs
-}
+\begin{enumerate}
+    \item Artisan \cite{artisan}
+    \item AutoReproduce \cite{autoreproduce}
+    \item Paper2Code \cite{paper2code}
+    \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents \cite{lin2025}
+    \item AutoP2C \cite{autop2c}
+    \item AutoMMLab \cite{autommlab}
+    \item Supporting Artifact Evaluation with LLMs \cite{heye2025}
+\end{enumerate}
+
+\subsection{Agent Scaffolding}
+Lin et. al. \cite{lin2025} aims to remove human-crafted system prompts and 
+verification functions [TODO: find out what this is?] that are present in self-refine [citation needed].
+
+\subsection{Models used}
+\begin{itemize}
+    \item Lin et. al. \cite{lin2025}
+    \subitem GPT-4.1 [Citation needed]
+    
+\end{itemize}
 
 \subsection{Validation}
-
-Artisan-Bench consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
+Artisan-Bench \cite{artisan} consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
 The authors do not state why the benchmark has no negative examples. The benchmark has examples in python, java, rust, scala, ocaml and bash.
+
+Lin et. al. \cite{lin2025} validate their solution by integrating with Paper2Code \cite{paper2code}, which enables easy testing against 
+Paper2CodeBench\cite{paper2code} and PaperBench \cite{paperbench}.
+
+
+\subsection{Benchmarks}
+\begin{enumerate}
+    \item Super \cite{super}
+    \item PaperBench \cite{paperbench}
+    \item Paper2CodeBench \cite{paper2code}
+    \item CORE-Bench \cite{corebench}
+    \item ReplicationBench \cite{replicationbench}
+    \item ReplicatorBench \cite{replicatorbench}
+    \item SocSciRepro-Bench \cite{socscireprobench} - Under Review at Nature Machine Intelligence
+    \item CompRep \cite{comprep}
+    \item SciReplicate-Bench \cite{scireplicatebench}
+\end{enumerate}
 
 
 \subsection{False negatives}
@@ -139,7 +174,7 @@ The authors do not state why the benchmark has no negative examples. The benchma
 
 \section{Conclusions}
 
-\bibliographystyle{plain}
+\bibliographystyle{apalike}
 \bibliography{refs}
 
 \end{document}
