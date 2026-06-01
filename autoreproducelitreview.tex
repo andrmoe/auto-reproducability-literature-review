@@ -51,9 +51,8 @@
 \section{Abstract}
 
 \section{Introduction}
-Computational experiments are \cite{schoch2023}
-Computational experiments could in principle be automatically reproducible \cite{chirigati2016}
-This is not always true in practice \cite{trisovic2021}
+Computational experiments could in principle be automatically reproducible \cite{chirigati2016},
+but this is not always true in practice \cite{trisovic2021}
 
 This literature review examines work done to automate the reproduction of computational experiments.
 \section{Related Work}
@@ -74,54 +73,76 @@ wang2025}
 
 \newpage
 \section{Method}
-Staring with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence.
-Almost all papers referenced by these were classed as "not assessed", "not relevant", "relevant" or "very relevant".
-Categories of papers were created and modified for relevant papers along the way.
-Cited papers from "Very relevant" papers were also assessed.
+The searh began with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
 
-Papers that cite "Very relevant" papers were also assessed.
+Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "very relevant".
 
-These factors were used to decide if a paper was "not relevant", "relevant" or "very relevant":
+These factors were used to assess papers:
 \begin{itemize}
-\item In which context was this paper cited? If the context is one of the categories, then it is relevant.
+\item In which context was this paper cited? If the context is one of the later categories, then it is relevant.
 \item If the context is not relevant, then the cited paper is also not relevant. (e.g. a list of papers that form a dataset for auto reproducibility)
 \item Was this paper only cited in the bibliography, and not the main text? Then it is not relevant.
 \item Does the paper's abstract relate to any of the categories. Then it's relevant. If not, then not relevant.
 \item Some papers are borderline. They are listed here [TODO: compile list]
 \end{itemize}
 
+"Very relevant" papers were then used to expand the search, by assessing their citations and citers.
+
 \subsection{Categories}
+Categories of papers were created and modified for relevant papers along the way.
+
 \begin{itemize}
-    \item Previous work \newline Literature reviews or surveys of automatic reproducibility.
-    \item Auto reproducibility \newline Systems that automatically reproduce computational research.
-    \item Research impact \newline Contributes to our understanding of the impact of automated reproducibility.
-    \item Terminology \newline Contributes by defining terminology related to reproducibility.
-    \item Validation \newline Contributes benchmarks or other validation techniques for automatic reproducibility.
-    \item Code Repair \newline Systems that automatically repair old code.
-    \item Journal policy \newline Papers that describe policies at journals related to reproducibility.
-    \item Reproducibility survey \newline Papers that survey reproducibility in a field.
-    \item Other
-    \item Agentic Science \newline AI systems that can conduct scientific tasks autonomously. [TODO: move to appendix]
-    \item Prepub reproducibility \newline Techniques that authors can use to make their research more reproducible. [TODO: move to appendix]
-    \item Hypothesis Gen \newline Systems that generate scientific hypotheses. [TODO: move to appendix]
-    \item Automatic Software Engineering \newline Systems that can do software engineering tasks autonomously. [TODO: move to appendix]
-    \item Science-specialized LLM \newline LLMs that are fine-tuned to be better at science. [TODO: move to appendix]
-    \item Multi-Agent \newline AI systems which consist of multiple collaborating agents. [TODO: move to appendix]
-    \item Tool calling [TODO: remove]
-    \item Figure reading [TODO: move to appendix]
-    \item Document parsing [TODO: move to appendix]    
+    \item Previous work \subitem Literature reviews or surveys of automatic reproducibility.
+    \item Auto reproducibility \subitem Systems that automatically reproduce computational research.
+    \item Research impact \subitem Contributes to our understanding of the impact of automated reproducibility.
+    \item Terminology \subitem Contributes by defining terminology related to reproducibility.
+    \item Validation \subitem Contributes benchmarks or other validation techniques for automatic reproducibility.
+    \item Code Repair \subitem Systems that automatically repair old code.
+    \item Journal policy \subitem Papers that describe policies at journals related to reproducibility.
+    \item Reproducibility survey \subitem Papers that survey reproducibility in a field.
+    \item Other  
 \end{itemize}
+
+Some whole categories were deemed not relevant only at the end of the process. They can be found in the appendix. [Citation needed]
 
 \section{Analysis}
 
 \section{Results}
 
-\subsection{Problem statement}
-Artisan "code generation task, where the agent generates a reproduction script that 
-independently reproduces the paper’s reported results based on the code and data given in the artifact."
-\newline
-Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Paper2Code \cite{paper2code} for benchmarking.
+1050 papers were assessed in total. Of these 24 were assessed to be "very relevant", 475 were "relevent", 551 were "not relevant". 
+8 papers that should be assessed according to the method, weren't assessed for varios reasons.
+Here is an overview of these cases: [TODO]
 
+
+\includegraphics[width=\textwidth]{citation_graph.pdf}
+
+List of "very relevant" papers:
+\begin{enumerate}
+    \item Artisan \cite{artisan}
+    \item AutoReproduce \cite{autoreproduce}
+    \item Paper2Code \cite{paper2code}
+    \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents \cite{lin2025}
+    \item AutoP2C \cite{autop2c}
+    \item AutoMMLab \cite{autommlab}
+    \item Supporting Artifact Evaluation with LLMs \cite{heye2025}
+    \item Super \cite{super}
+    \item PaperBench \cite{paperbench}
+    \item Paper2CodeBench \cite{paper2code}
+    \item CORE-Bench \cite{corebench}
+    \item ReplicationBench \cite{replicationbench}
+    \item ReplicatorBench \cite{replicatorbench}
+    \item SocSciRepro-Bench \cite{socscireprobench} - Under Review at Nature Machine Intelligence
+    \item CompRep \cite{comprep}
+    \item SciReplicate-Bench \cite{scireplicatebench}
+    \item Automating Computational Reproducibility in Social Science \cite{shah2026}
+    \item LLM-Assisted Replication as Scientific Infrastructure \cite{kubota2026}
+    \item Automated Modernization of Machine Learning Engineering Notebooks for Reproducibility \cite{jin2026}
+    \item Reproducibility in NLP: What Have We Learned from the Checklist? \cite{magnusson2023}
+    \item From Reproduction to Replication: Evaluating Research Agents with Progressive Code Masking \cite{kim2025}
+    \item Automated Reproducibility Testing in R Markdown \cite{brandmaier2025}
+    \item Automated Reproducibility Has a Problem Statement Problem \cite{snelleman2025}
+    \item What Papers Don't Tell You: Recovering Tacit Knowledge for Automated Paper Reproduction \cite{li2026}
+\end{enumerate}
 
 \subsection{Auto reproducibility systems}
 \begin{enumerate}
@@ -133,6 +154,14 @@ Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Pap
     \item AutoMMLab \cite{autommlab}
     \item Supporting Artifact Evaluation with LLMs \cite{heye2025}
 \end{enumerate}
+
+\subsection{Problem statement}
+\begin{itemize}
+    \item Artisan's \cite{artisan} problem statement is:
+        \subitem "code generation task, where the agent generates a reproduction script that 
+independently reproduces the paper’s reported results based on the code and data given in the artifact."
+    \item Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Paper2Code \cite{paper2code} for benchmarking.
+\end{itemize}
 
 \subsection{Agent Scaffolding}
 Lin et. al. \cite{lin2025} aims to remove human-crafted system prompts and 
@@ -150,7 +179,7 @@ Artisan-Bench \cite{artisan} consists of 23 curated software engineering papers 
 The authors do not state why the benchmark has no negative examples. The benchmark has examples in python, java, rust, scala, ocaml and bash.
 
 Lin et. al. \cite{lin2025} validate their solution by integrating with Paper2Code \cite{paper2code}, which enables easy testing against 
-Paper2CodeBench\cite{paper2code} and PaperBench \cite{paperbench}.
+Paper2CodeBench \cite{paper2code} and PaperBench \cite{paperbench}.
 
 
 \subsection{Benchmarks}
@@ -176,5 +205,16 @@ Paper2CodeBench\cite{paper2code} and PaperBench \cite{paperbench}.
 
 \bibliographystyle{apalike}
 \bibliography{refs}
-
+\section*{Appendix}
+\begin{itemize}
+    \item Agentic Science \subitem AI systems that can conduct scientific tasks autonomously. 
+    \item Prepub reproducibility \subitem Techniques that authors can use to make their research more reproducible. 
+    \item Hypothesis Gen \subitem Systems that generate scientific hypotheses. 
+    \item Automatic Software Engineering \subitem Systems that can do software engineering tasks autonomously. 
+    \item Science-specialized LLM \subitem LLMs that are fine-tuned to be better at science. 
+    \item Multi-Agent \subitem AI systems which consist of multiple collaborating agents. 
+    \item Tool calling [TODO: remove]
+    \item Figure reading 
+    \item Document parsing   
+\end{itemize}
 \end{document}

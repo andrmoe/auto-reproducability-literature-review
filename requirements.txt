@@ -1,2 +1,4 @@
 doit
-pytest
+networkx
+matplotlib
+bibtexparser
