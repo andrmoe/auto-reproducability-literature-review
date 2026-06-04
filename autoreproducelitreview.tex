@@ -1,43 +1,15 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{enumerate}
-\usepackage{listings}
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{calc}
 \usepackage{tikz}
-\usetikzlibrary{positioning, arrows.meta, shapes.geometric}
-
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.4,0.4,0.4}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{blue},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\sffamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=4
-}
-
-\lstset{style=mystyle}
 
 % Title and Author
 \title{Auto-reproducability literature review}
@@ -51,30 +23,12 @@
 \section{Abstract}
 
 \section{Introduction}
-Computational experiments could in principle be automatically reproducible \cite{chirigati2016},
-but this is not always true in practice \cite{trisovic2021}
+Reproducing experiments is important to advance science, but it's a time-consuming activity for scientists, without much reward.
+LLMs are a promising tool for fully automating reproduction of experiments that only need computation.
+This literature review examines work done in this area.
 
-This literature review examines work done to automate the reproduction of computational experiments.
-\section{Related Work}
-Previous reviews have ...
-\cite{chen2025ai4researchsurveyartificialintelligence,
-gridach2025agenticaiscientificdiscovery,
-gu2024largelanguagemodelsconstructing,
-huynh2025largelanguagemodelscode,
-luo2025llm4srsurveylargelanguage,
-ren2026scientificintelligencesurveyllmbased,
-xi2023risepotentiallargelanguage,
-zheng2025automationautonomysurveylarge,
-zhou2025hypothesispublicationcomprehensivesurvey,
-ferrag2026llmreasoningautonomousai,
-wang2025}
-
-\section{Background}
-
-\newpage
 \section{Method}
 The searh began with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
-
 Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "very relevant".
 
 These factors were used to assess papers:
@@ -92,20 +46,18 @@ These factors were used to assess papers:
 Categories of papers were created and modified for relevant papers along the way.
 
 \begin{itemize}
-    \item Previous work \subitem Literature reviews or surveys of automatic reproducibility.
-    \item Auto reproducibility \subitem Systems that automatically reproduce computational research.
-    \item Research impact \subitem Contributes to our understanding of the impact of automated reproducibility.
-    \item Terminology \subitem Contributes by defining terminology related to reproducibility.
-    \item Validation \subitem Contributes benchmarks or other validation techniques for automatic reproducibility.
-    \item Code Repair \subitem Systems that automatically repair old code.
-    \item Journal policy \subitem Papers that describe policies at journals related to reproducibility.
-    \item Reproducibility survey \subitem Papers that survey reproducibility in a field.
-    \item Other  
+    \item Previous work - 10 papers \subitem Literature reviews or surveys of automatic reproducibility.
+    \item Auto reproducibility - 16 papers \subitem Systems that automatically reproduce computational research.
+    \item Research impact - 8 papers \subitem Contributes to our understanding of the impact of automated reproducibility.
+    \item Terminology - 30 papers \subitem Contributes by defining terminology related to reproducibility.
+    \item Validation - 58 papers \subitem Contributes benchmarks or other validation techniques for automatic reproducibility.
+    \item Code Repair - 12 papers \subitem Systems that automatically repair old code.
+    \item Journal policy - 21 papers \subitem Papers that describe policies at journals related to reproducibility.
+    \item Reproducibility survey - 45 papers \subitem Papers that survey reproducibility in a field.
+    \item Other - 9 papers
 \end{itemize}
 
 Some whole categories were deemed not relevant only at the end of the process. They can be found in the appendix. [Citation needed]
-
-\section{Analysis}
 
 \section{Results}
 
@@ -145,6 +97,7 @@ List of "very relevant" papers:
 \end{enumerate}
 
 \subsection{Auto reproducibility systems}
+Significant work has been done on auto-reproduction systems, but no system is currently capable of reproducing more than X\% of tested papers.
 \begin{enumerate}
     \item Artisan \cite{artisan}
     \item AutoReproduce \cite{autoreproduce}
@@ -156,55 +109,86 @@ List of "very relevant" papers:
 \end{enumerate}
 
 \subsection{Problem statement}
+The field has not agreed on a common problem statement for automated reproducibility, 
+and some authors who have contributed to the field had a slightly different problem in mind. 
+This makes it difficult to compare performance across systems.
 \begin{itemize}
     \item Artisan's \cite{artisan} problem statement is:
         \subitem "code generation task, where the agent generates a reproduction script that 
 independently reproduces the paper’s reported results based on the code and data given in the artifact."
     \item Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Paper2Code \cite{paper2code} for benchmarking.
+    \item Paper2code \cite{paper2code}:
+        \subitem Automatically produce a code repository that faithfully implements a methods and experiments in ML papers.
+        \subitem The system is not given access to pre-existing artifacts
+    \item Autoreproduce
+        \subitem "..., given a paper P and instructions about experiment I, the agent A needs to reproduce the code 
+        implementation of the method and experiment proposed in the paper Code = A(P, I), where Code is the output code."
 \end{itemize}
 
-\subsection{Agent Scaffolding}
-Lin et. al. \cite{lin2025} aims to remove human-crafted system prompts and 
-verification functions [TODO: find out what this is?] that are present in self-refine [citation needed].
+\subsection{Validation}
+Due to the differing problem statements, most papers primarily (sometimes exclusively) develop their own dataset of papers and scoring system.
+
+Artisan-Bench \cite{artisan} consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
+The authors do not state why the benchmark has no negative examples. The benchmark has examples in python, java, rust, scala, ocaml and bash.
+
+Paper2code \cite{paper2code} uses their own benchmark, Paper2CodeBench, to assess code generation. 
+Reproducibility is not their main focus, but they run a small evaluation on 10 papers with human judges, and find that their system reproduces the papers 29.46\% of the time.
+
+Lin et. al. \cite{lin2025} validate their solution by integrating with Paper2Code \cite{paper2code}, which enables easy testing against 
+Paper2CodeBench \cite{paper2code} and PaperBench \cite{paperbench}.
 
 \subsection{Models used}
 \begin{itemize}
     \item Lin et. al. \cite{lin2025}
     \subitem GPT-4.1 [Citation needed]
+    \item Paper2Code \cite{paper2code}
+    \subitem o3-mini-high (from inspect AI) [citation needed]
     
 \end{itemize}
 
-\subsection{Validation}
-Artisan-Bench \cite{artisan} consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
-The authors do not state why the benchmark has no negative examples. The benchmark has examples in python, java, rust, scala, ocaml and bash.
+\subsection{Agent Scaffolding}
+The main difference between existing auto-reproducibility systems, is not the models they're using, but system prompts and scaffolding. 
+Most use a multi-agent approach, where the task is decomposed sequentially, and specialized agents execute each task. 
 
-Lin et. al. \cite{lin2025} validate their solution by integrating with Paper2Code \cite{paper2code}, which enables easy testing against 
-Paper2CodeBench \cite{paper2code} and PaperBench \cite{paperbench}.
+Lin et. al. \cite{lin2025} aims to remove human-crafted system prompts and 
+verification functions [TODO: find out what this is?] that are present in self-refine [citation needed].
 
+Paper2code \cite{paper2code} draws inspiration from typical software development workflows, 
+by decomposing the task into three coordinated stages: Planning, analysis and coding.
+
+Autoreproduce \cite{autoreproduce} uses the paper lineage algorithm, developed by the authors, to examine citation relationships and associated code. 
+This is done in order to uncover needed implicit domain knowlegde.
+The system utilizes batch sampling for unit testing. [TODO: find out what this is]
+The process has three stages: Literature review, Paper Lineag and Code Development.
 
 \subsection{Benchmarks}
 \begin{enumerate}
     \item Super \cite{super}
     \item PaperBench \cite{paperbench}
     \item Paper2CodeBench \cite{paper2code}
+        \subitem 90 papers from ICLR, ICML, and NeurIPS 2024, filtered to have code repositories smaller than 70 000 tokens, and an LLM ranking.
+        \subitem Evalutaion is done with an LLM judge, both with and without the original repository as reference, 
+        in addition to a human evaluation by the original paper's authors.
     \item CORE-Bench \cite{corebench}
     \item ReplicationBench \cite{replicationbench}
     \item ReplicatorBench \cite{replicatorbench}
     \item SocSciRepro-Bench \cite{socscireprobench} - Under Review at Nature Machine Intelligence
     \item CompRep \cite{comprep}
     \item SciReplicate-Bench \cite{scireplicatebench}
+    \item ReproduceBench \cite{autoreproduce}
+        \subitem 13 curated papers across diverse domains, including knowledge distillation and Partial differential equations.
+        \subitem Evaluates whether the generated code accurately reflects the paper and code by the authors, using an LLM judge.
+        \subitem Also evaluates whether the generated code reproduces the original result, using the original metric from the paper.
+    
 \end{enumerate}
 
-
-\subsection{False negatives}
 \section{Limitations}
-
-\section{Future Work}
 
 \section{Conclusions}
 
 \bibliographystyle{apalike}
 \bibliography{refs}
+\newpage
 \section*{Appendix}
 \begin{itemize}
     \item Agentic Science \subitem AI systems that can conduct scientific tasks autonomously. 
