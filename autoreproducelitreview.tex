@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[8pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
@@ -10,6 +10,7 @@
 \usepackage{booktabs}
 \usepackage{calc}
 \usepackage{tikz}
+\usepackage{comment}
 
 % Title and Author
 \title{Auto-reproducability literature review}
@@ -28,7 +29,9 @@ LLMs are a promising tool for fully automating reproduction of experiments that 
 This literature review examines work done in this area.
 
 \section{Method}
-The searh began with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
+The method used is "snowballing". Starting with a set of seed papers. Then assessing related papers recursively. 
+
+The search began with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
 Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "very relevant".
 
 These factors were used to assess papers:
@@ -41,9 +44,11 @@ These factors were used to assess papers:
 \end{itemize}
 
 "Very relevant" papers were then used to expand the search, by assessing their citations and citers.
-
 \subsection{Categories}
-Categories of papers were created and modified for relevant papers along the way.
+Categories of papers were created and modified for relevant papers along the way. 
+The point of this is to group similar papers together, for summarising the literature, and comparison.
+
+Categories used:
 
 \begin{itemize}
     \item Previous work - 10 papers \subitem Literature reviews or surveys of automatic reproducibility.
@@ -61,13 +66,14 @@ Some whole categories were deemed not relevant only at the end of the process. T
 
 \section{Results}
 
-1050 papers were assessed in total. Of these 24 were assessed to be "very relevant", 475 were "relevent", 551 were "not relevant". 
+1050 papers were assessed in total. Of these 24 were assessed to be "very relevant", 475 were "relevant", 551 were "not relevant". 
 8 papers that should be assessed according to the method, weren't assessed for varios reasons.
 Here is an overview of these cases: [TODO]
 
 
 \includegraphics[width=\textwidth]{citation_graph.pdf}
 
+\begin{comment}
 List of "very relevant" papers:
 \begin{enumerate}
     \item Artisan \cite{artisan}
@@ -95,6 +101,7 @@ List of "very relevant" papers:
     \item Automated Reproducibility Has a Problem Statement Problem \cite{snelleman2025}
     \item What Papers Don't Tell You: Recovering Tacit Knowledge for Automated Paper Reproduction \cite{li2026}
 \end{enumerate}
+\end{comment}
 
 \subsection{Auto reproducibility systems}
 Significant work has been done on auto-reproduction systems, but no system is currently capable of reproducing more than X\% of tested papers.
@@ -116,19 +123,19 @@ This makes it difficult to compare performance across systems.
     \item Artisan's \cite{artisan} problem statement is:
         \subitem "code generation task, where the agent generates a reproduction script that 
 independently reproduces the paper’s reported results based on the code and data given in the artifact."
-    \item Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Paper2Code \cite{paper2code} for benchmarking.
     \item Paper2code \cite{paper2code}:
-        \subitem Automatically produce a code repository that faithfully implements a methods and experiments in ML papers.
+        \subitem Automatically produce a code repository that faithfully implements methods and experiments in ML papers.
         \subitem The system is not given access to pre-existing artifacts
+    \item Lin et. al. \cite{lin2025} do not define the problem explicitly, but rely on Paper2Code \cite{paper2code} for benchmarking.
     \item Autoreproduce
         \subitem "..., given a paper P and instructions about experiment I, the agent A needs to reproduce the code 
         implementation of the method and experiment proposed in the paper Code = A(P, I), where Code is the output code."
 \end{itemize}
 
 \subsection{Validation}
-Due to the differing problem statements, most papers primarily (sometimes exclusively) develop their own dataset of papers and scoring system.
+Due to the differing problem statements, most papers primarily (and sometimes exclusively) develop their own dataset and scoring system.
 
-Artisan-Bench \cite{artisan} consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
+Artisan-Bench \cite{artisan} is only used by Artisan, and consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
 The authors do not state why the benchmark has no negative examples. The benchmark has examples in python, java, rust, scala, ocaml and bash.
 
 Paper2code \cite{paper2code} uses their own benchmark, Paper2CodeBench, to assess code generation. 
@@ -159,7 +166,7 @@ by decomposing the task into three coordinated stages: Planning, analysis and co
 Autoreproduce \cite{autoreproduce} uses the paper lineage algorithm, developed by the authors, to examine citation relationships and associated code. 
 This is done in order to uncover needed implicit domain knowlegde.
 The system utilizes batch sampling for unit testing. [TODO: find out what this is]
-The process has three stages: Literature review, Paper Lineag and Code Development.
+The process has three stages: Literature review, Paper Lineage and Code Development.
 
 \subsection{Benchmarks}
 \begin{enumerate}
@@ -183,6 +190,7 @@ The process has three stages: Literature review, Paper Lineag and Code Developme
 \end{enumerate}
 
 \section{Limitations}
+
 
 \section{Conclusions}
 
