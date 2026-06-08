@@ -162,7 +162,7 @@ generation_colors = ["#6666ff", "#00aa00", "#ff6666", "#888888"]
 category_colors = {
     "auto-reproducibility": "#ffffaa",
     "validation": "#aaffff",
-    "journal policy": "#ffaaaa"
+    "journal policy": "#ffaaff"
 }
 
 def draw_graph(graph: nx.DiGraph, output: str = "citation_graph.pdf") -> None:
