@@ -102,31 +102,29 @@ def build_graph(bib_path: str) -> nx.DiGraph:
     g = nx.DiGraph()
 
     papers = {
-        "artisan": (100.0, 2, ["super", "heye2025", "corebench", "liang2024", "paperbench", "paper2code", "liang2024"]),
-        "lin2025": (190.0, 1, ["refp2c", "autop2c", "paperbench", "paper2code", "autoreproduce"]),
-        "paper2code": (300.0, 1, ["paperbench", "scireplicatebench"]),
-        "paperbench": (180.0, 0, ["corebench"]),
-        "autop2c": (30.0, 2, []),
-        "autommlab": (270.0, 1, []),
-        "heye2025": (140.0, 1, ["reproscreener"]),
-        "super": (110.0, 1, []),
-        "corebench": (380.0, 1, []),
-        "replicationbench": (320.0, 1, ["corebench", "scireplicatebench"]),
-        "replicatorbench": (380.0, 2, ["corebench"]),
-        "socscireprobench": (410.0, 2, ["corebench"]),
-        "scireplicatebench": (200.0, 0, ["refp2c", "paper2code", "paperbench", "paper2code", "corebench"]),
-        "autoreproduce": (300.0, 0, ["lin2025", "super", "paperbench", "paper2code", "autommlab", "corebench"]),
-        "shah2026": (180.0, 0, ["corebench", "paperbench"]),
-        "kubota2026": (60.0, 1, ["shah2026"]),
-        "liang2024": (80.0, 3, []),
-        "jailbreakfoundry": (350.0, 1, ["scireplicatebench"]),
-        "envbench": (400, 2, ["corebench"]),
-        "reproscreener": (210, 0, ["heye2025"]),
-        "refp2c": (280, 1, []),
-        "kim2025": (140, 1, ["paperbench", "super"])
+        "artisan": (100.0, 2, "auto-reproducibility", ["super", "heye2025", "corebench", "liang2024", "paperbench", "paper2code", "liang2024"]),
+        "lin2025": (190.0, 1, "auto-reproducibility", ["autop2c", "paperbench", "paper2code", "autoreproduce"]),
+        "paper2code": (300.0, 1, "auto-reproducibility", ["paperbench", "scireplicatebench"]),
+        "paperbench": (180.0, 0, "validation", ["corebench"]),
+        "autop2c": (30.0, 2, "auto-reproducibility", []),
+        "heye2025": (140.0, 1, "auto-reproducibility", ["reproscreener"]),
+        "super": (110.0, 1, "validation", []),
+        "corebench": (380.0, 1, "validation", []),
+        "replicationbench": (320.0, 1, "validation", ["corebench", "scireplicatebench"]),
+        "replicatorbench": (380.0, 2, "validation", ["corebench"]),
+        "socscireprobench": (410.0, 2, "validation", ["corebench"]),
+        "scireplicatebench": (200.0, 0, "validation", ["paper2code", "paperbench", "paper2code", "corebench"]),
+        "autoreproduce": (300.0, 0, "auto-reproducibility", ["lin2025", "super", "paperbench", "paper2code", "corebench"]),
+        "shah2026": (180.0, 0, "auto-reproducibility", ["corebench", "paperbench"]),
+        "kubota2026": (60.0, 1, "journal policy", ["shah2026"]),
+        "liang2024": (80.0, 3, "auto-reproducibility", []),
+        "jailbreakfoundry": (350.0, 1, "auto-reproducibility", ["scireplicatebench"]),
+        "envbench": (400, 2, "validation", ["corebench"]),
+        "reproscreener": (210, 0, "validation", ["heye2025"]),
+        "kim2025": (140, 1, "validation", ["paperbench", "super"])
     }
 
-    for key, (y, generation, citations) in papers.items():
+    for key, (y, generation, category, citations) in papers.items():
         if key not in entries:
             raise KeyError(f"BibTeX key {key!r} not found in {bib_path}")
 
@@ -139,6 +137,7 @@ def build_graph(bib_path: str) -> nx.DiGraph:
             title=title.split(':')[0],
             pub_date=pub_date,
             generation=generation,
+            category=category,
             y=300-140*generation+ 40*(pub_date.month % 4),
         )
         for citation in citations:
@@ -159,11 +158,15 @@ def make_label(data: dict) -> str:
     year_month = data["pub_date"].strftime("%Y-%m")
     return f"{title}\n({year_month})"
 
-generation_colors = ["#aaaaff", "#aaffaa", "#ffaaaa", "#bbbbbb"]
+generation_colors = ["#6666ff", "#00aa00", "#ff6666", "#888888"]
+category_colors = {
+    "auto-reproducibility": "#ffffaa",
+    "validation": "#aaffff",
+    "journal policy": "#ffaaaa"
+}
 
 def draw_graph(graph: nx.DiGraph, output: str = "citation_graph.pdf") -> None:
     pos = compute_positions(graph)
-
     fig, ax = plt.subplots(figsize=(16, 10))
 
     for source, target in graph.edges():
@@ -204,9 +207,9 @@ def draw_graph(graph: nx.DiGraph, output: str = "citation_graph.pdf") -> None:
             zorder=3,
             bbox={
                 "boxstyle": "round,pad=0.35,rounding_size=0.15",
-                "facecolor": generation_colors[data["generation"]],
-                "edgecolor": "#336699",
-                "linewidth": 1.2,
+                "facecolor": category_colors[data["category"]],
+                "edgecolor": generation_colors[data["generation"]],
+                "linewidth": 2,
             },
         )
 

@@ -54,11 +54,12 @@ def task_compile_pdf():
     }
 
 
-def task_check_python_dependencies():
-    files = [f for f in os.listdir(".") if os.path.isfile(f)]
-    for file in files:
-        if file.split('.')[-1] != 'py':
-            continue
-        dependencies = list(get_file_refs(file))
-        if len(dependencies):
-            yield {'name': file, 'actions': [], 'file_dep': dependencies, 'targets': [file]}
+def task_generate_citation_graph():
+    return {
+        "actions": [
+            ["python", "citation_graph.py"]
+        ],
+        "file_dep": ["citation_graph.py", "refs.bib"],
+        "targets": ["citation_graph.pdf"]
+    }
+
