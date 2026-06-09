@@ -121,7 +121,7 @@ def build_graph(bib_path: str) -> nx.DiGraph:
         "jailbreakfoundry": (350.0, 1, "auto-reproducibility", ["scireplicatebench"]),
         "envbench": (400, 2, "validation", ["corebench"]),
         "reproscreener": (210, 0, "validation", ["heye2025"]),
-        "kim2025": (140, 1, "validation", ["paperbench", "super"])
+        "autoexperiment": (140, 1, "validation", ["paperbench", "super"])
     }
 
     for key, (y, generation, category, citations) in papers.items():
