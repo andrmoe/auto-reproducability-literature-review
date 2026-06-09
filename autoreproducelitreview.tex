@@ -12,30 +12,42 @@
 \usepackage{tikz}
 \usepackage{comment}
 \usepackage[colorlinks=true,citecolor=blue]{hyperref}
+\usepackage[all]{hypcap}
 \usepackage[numbers,sort&compress]{natbib}
 \pagenumbering{arabic}
 
 % Title and Author
 \title{Auto-reproducability literature review}
 \author{Andreas Moe}
-\date{\today}
+\date{2026-06-10}
 
 \begin{document}
 
 \maketitle
 
-\section{Abstract}
-
 \section{Introduction}
 Reproducing experiments is important to advance science, but it's a time-consuming activity for scientists, without much reward.
 LLMs are a promising tool for fully automating reproduction of experiments that only need computation.
-This literature review examines work done in this area.
+This literature review examines work done in this area, 
+by:
+\begin{itemize}
+    \item developing a classification system for auto-reproducicibiliy systems and benchmarks of auto-reproducibility systems.
+    \item identifying as many existing systems and benchmark as possible.
+    %\item summarizing common design choices for auto-reproducibility systems and benchmarks.
+    %\item discussing limitations of current approaches
+    %\item surveying studies of the impact of auto-reproducibility systems.
+    %\item identifying gaps in the literature.
+    %\item 
+\end{itemize}
+M auto-reproducibility systems and N have been identified. %[TODO: update numbers]
+P\% of these were published between 2025 and 2026, showing that there is currently a large interest in this area.
+However, there is currently no published dedicated survey of this, which is why this literature review has been conducted.
 
 \section{Background}
 Trisovic et. al.\cite{trisovic2021} examined more than 2000 replication datasets, and found that 74\% of files crashed on initial execution. 
 Even after code cleaning, 56\% crashed. This means that, currently, significant work is needed in order to reproduce computational research. 
 Even when the authors provide the code that was used in the experiments. However, being able to rerun code and get the same result is not full reproducibility.
-Sometimes, the paper excludes important details that are needed to reproduce the experiment [citation needed]. 
+Sometimes, the paper excludes important details that are needed to reproduce the experiment. %[citation needed]
 This prevents the reader from getting a full understanding of the experiment. 
 It's therefore desirable that an experiment should be reproducible based only on the paper.
 Edward Raff\cite{raff2019} tried to replicate 255 papers this way, and was able to replicate 162 of them (63.5\%), 
@@ -67,22 +79,42 @@ The abbreviation is therefore IR1.
 \section{Method}
 The method used is "snowballing". Starting with a set of seed papers. Then assessing related papers recursively. 
 
-The search began with these papers [citation needed] from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
-Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "very relevant".
+The search began with these papers
+\begin{enumerate}
+    \item Automating Computational Reproducibility in Social Science: Comparing Prompt-Based and Agent-Based Approaches\cite{shah2026}
+    \item Automated Modernization of Machine Learning Engineering  Notebooks for Reproducibility\cite{jin2026}
+    \item CompRep: A Dataset For Computational Reproducibility\cite{comprep}
+    \item From AI for Science to Agentic Science:  A Survey on Autonomous Scientific Discovery\cite{wei2025}
+    \item SciReplicate-Bench: Benchmarking LLMs in Agent-driven Algorithmic Reproduction from Research Papers\cite{scireplicatebench}
+    \item REPRO-BENCH: Can Agentic AI Systems Assess the Reproducibility of  Social Science Research?\cite{reprobench}
+    \item From Reproduction to Replication: Evaluating Research Agents with Progressive Code Masking\cite{kim2025}
+    \item Automated Reproducibility Testing in R Markdown\cite{brandmaier2025}
+    \item AUTOREPRODUCE: Automatic AI Experiment  Reproduction with Paper Lineage\cite{autoreproduce}
+    \item PaperBench: Evaluating AI’s Ability to Replicate AI Research\cite{paperbench}
+    \item Comparing Human-Only, AI-Assisted, and AI-Led Teams on Assessing Research Reproducibility in Quantitative Social Science\cite{bensch2025}
+    \item Computational reproducibility in computational social science\cite{schoch2023}
+    \item Reproscreener: Leveraging LLMs for Assessing Computational Reproducibility of Machine Learning Pipelines\cite{reproscreener}
+    \item AutoAgents: A Framework for Automatic Agent  Generation\cite{chen2024}
+    \item Automated Social Science: Language Models as Scientist and Subjects\cite{manning2024}
+    \item The replication crisis has led to positive structural, procedural, and community changes\cite{korbmacher2023}
+\end{enumerate}
 
+from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
+Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "very relevant".
 Google Scholar\cite{googlescholar} was used to find out which papers have cited the "very relevant" papers.
 Queries were made between March and June 2026.
-
 These factors were used to assess papers:
 \begin{itemize}
 \item In which context was this paper cited? If the context is one of the later categories, then it is relevant.
 \item If the context is not relevant, then the cited paper is also not relevant. (e.g. a list of papers that form a dataset for auto reproducibility)
 \item Was this paper only cited in the bibliography, and not the main text? Then it is not relevant.
 \item Does the paper's abstract relate to any of the categories. Then it's relevant. If not, then not relevant.
-\item Some papers are borderline. They are listed here [TODO: compile list]
+\item Some papers are borderline. They are listed here %[TODO: compile list]
 \end{itemize}
-
 "Very relevant" papers were then used to expand the search, by assessing their citations and citers.
+
+A visualization of the resulting citation graph can be seen in \autoref{fig:citationgraph}.
+
 \subsection{Categories}
 Categories of papers were created and modified for relevant papers along the way. 
 The point of this is to group similar papers together, for summarising the literature, and comparison.
@@ -101,8 +133,7 @@ Categories used:
     \item Other - 9 papers
 \end{itemize}
 
-Some whole categories were deemed not relevant only at the end of the process. They can be found in the appendix. [Citation needed]
-
+Some whole categories were deemed not relevant only at the end of the process. \hyperref[sec:notrelevantcategories]{They can be found in the appendix}.
 \subsection{Use of AI tools}
 LLM tools were used to create figures, decide on styling, extract citations from papers (unsuccessfully), 
 and as a conversation partner when trying to understand papers 
@@ -111,13 +142,17 @@ as well as helping with latex syntax.
 None of the words in this review have been generated with AI, and no proofreading or feedback has been done with AI.
 
 \section{Results}
-
 1050 papers were assessed in total. Of these 24 were assessed to be "very relevant", 475 were "relevant", 551 were "not relevant". 
 8 papers that should be assessed according to the method, weren't assessed for various reasons.
-Here is an overview of these cases: [TODO]
+Here is an overview of these cases: %[TODO]
 
-\includegraphics[width=\textwidth]{citation_graph.pdf}
-
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{citation_graph.pdf}
+    \caption{Citation graph for "very relevant" papers.}
+    \label{fig:citationgraph}
+    
+\end{figure}
 \begin{comment}
 List of "very relevant" papers:
 \begin{enumerate}
@@ -187,7 +222,8 @@ by feeding the output of one into the other, and end up with an OR2 system. In t
 
 \subsection{Auto reproducibility systems}
 Significant work has been done on auto-reproduction systems, but no system is 
-currently capable of reproducing more than X\% [TODO: find number] of tested papers.
+currently capable of reproducing more than X\% %[TODO: find number] 
+of tested papers.
 \begin{enumerate}
     \item Paper2Code\cite{paper2code} (R1 $\rightarrow$ R2)
         \subitem approaches the paper to code problem by drawing inspiration from typical software development workflows.
@@ -198,8 +234,10 @@ currently capable of reproducing more than X\% [TODO: find number] of tested pap
         The final coding stage produces a full code repository, by generating one file at the time, using that file's analysis.
         Importantly, this is done "bottom up", so that the agents have access to the complete code for the necessary dependencies.
     \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents\cite{lin2025} (R1 $\rightarrow$ R2)
-        \subitem builds on the Paper2Code framework, and aims to remove human-crafted system prompts and 
-            verification functions [TODO: find out what this is?] that are present in self-refine [citation needed].
+        \subitem builds on the Paper2Code framework, and aims to remove human-crafted system prompts and verification functions %[TODO: find out what this is?] 
+            that are present in self-refine. %[citation needed]
+            The authors validate their solution by integrating with Paper2Code\cite{paper2code}, which enables easy testing against 
+            Paper2CodeBench\cite{paper2code} and PaperBench\cite{paperbench}.
     \item AutoP2C\cite{autop2c} (R1 $\rightarrow$ R2)
         \subitem has four stages that imitate human experts, when implementing code repositories from papers.
         The first stage analyzes well-established ML code repositories, looking for common architectural patterns, 
@@ -238,7 +276,7 @@ currently capable of reproducing more than X\% [TODO: find number] of tested pap
         The system attempts to solve the paper to code problem through distinct stages.
         The first stage builds and prunes the citation graph, in order to surface necessary tacit knowledge.
         The next stage uses the paper and surfaced tacit knowledge to create the code implementation, 
-        through execution-feedback refinement. [TODO: fact check]
+        through execution-feedback refinement. %[TODO: fact check]
     \item ResearchCodeAgent\cite{researchcodeagent} (R1/R2 $\rightarrow$ R4)
         \subitem approaches full implementation and code repair/execution problem with a multi-agent system. 
         It consists of a planner and a worker. These each have a bespoke set of action that they can take to mutate their environments.
@@ -274,9 +312,9 @@ currently capable of reproducing more than X\% [TODO: find number] of tested pap
         However, the authors had to implement even further measures to mitigate this to an acceptable level.
         It is unclear whether this should be classified as OR2 or OR4, since the experimental data is required for it to operate. 
         However, the idea is to produce a reproduction script, which doesn't depend on it.
-    \item Supporting Artifact Evaluation with LLMs\cite{heye2025} (OR4? in collab with human)
+    \item Supporting Artifact Evaluation with LLMs\cite{heye2025} (OR4*) %[TODO: reassess]
         \subitem restricts the OR1 problem to computer security papers. 
-        \subitem Partial automation of computer security reproduction. [TODO: finish]
+        \subitem Partial automation of computer security reproduction. %[TODO: finish]
         "Large Language Models (LLMs) can provide powerful support for AE tasks: (i) text-based reproducibility rating, 
         (ii) autonomous sandboxed execution environment preparation, and (iii) assessment of methodological pitfalls."
     \item Automating Computational Reproducibility in Social Science\cite{shah2026} (R2 $\rightarrow$ R4)
@@ -307,7 +345,7 @@ currently capable of reproducing more than X\% [TODO: find number] of tested pap
         They use a framework-coupled agent workflow. The framework in question provides fixed task contracts, dataset adapter interfaces, transformation oreations,
         windowing operations, and metric definitions. These are benchmark conditions that are held fixed across all reproductions.
         The aim of this is to make code generation verifiable.
-    \item AI Copilots for Reproducibility in Science\cite{bibal2025} (R1/R2 $\rightarrow$*[TODO: add footnote] R4)
+    \item AI Copilots for Reproducibility in Science\cite{bibal2025} (R1/R2 $\rightarrow$* R4) %[TODO: add footnote on *]
         \subitem approaches full implementation and code repair/execution as an AI-human collaboration, 
             where the AI system generates a Jupyter notebook, based on the paper and, optionally, existing code.
             The idea is that the agent shouldn't try to resolve ambiguities itself, 
@@ -316,53 +354,45 @@ currently capable of reproducing more than X\% [TODO: find number] of tested pap
             the researcher should decide if an experiment has been successfully reproduced.
     \item Comparing Human-Only, AI-Assisted, and AI-Led Teams on Assessing Research Reproducibility in Quantitative Social Science\cite{bensch2025} (OR1*/OR2*)
         \subitem tests the effects on outcome reproducibility assessment, from human teams using AI, and human teams led by AI.
+    \item Automated Reproducibility Testing in R Markdown\cite{brandmaier2025} %[TODO: write up]
         
 \end{enumerate}
-Papers that need significant modification to fit into the classification:
+Some papers need significant modification to fit into the classification:
 \begin{enumerate}
     \item Natural Language to Code Generation in Interactive Data Science Notebooks\cite{yin2022} 
         \subitem 
 \end{enumerate}
 
-\subsection{Problem statement}
-    The field has not agreed on a common problem statement for automated reproducibility, 
-    and some authors who have contributed to the field had slightly different problems in mind. 
-    This makes it difficult to compare performance across systems.
-
-\subsection{Models used}
-\begin{itemize}
-    \item Lin et. al.\cite{lin2025}
-        \subitem GPT-4.1 [Citation needed]
-    \item Paper2Code\cite{paper2code}
-        \subitem o3-mini-high (from inspect AI) [citation needed]
-    \item AutoP2C
-        \subitem GPT-4o
-    
-\end{itemize}
-
 The main difference between existing auto-reproducibility systems, is not the models they're using, but system prompts and scaffolding. 
 Most use a multi-agent approach, where the task is decomposed sequentially, and specialized agents execute each task. 
 
 \subsection{Benchmarks}
+The field has not agreed on a common problem statement for automated reproducibility, 
+and some authors who have contributed to the field had slightly different problems in mind. 
+This makes it difficult to compare performance across systems.
 Due to the differing problem statements, most papers primarily (and sometimes exclusively) develop their own dataset and scoring system.
 
-Artisan-Bench\cite{artisan} is only used by Artisan, and consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
-The benchmark has examples in python, java, rust, scala, ocaml and bash.
-
-Paper2code\cite{paper2code} uses their own benchmark, Paper2CodeBench, to assess code generation. 
-Reproducibility is not their main focus, but they run a small evaluation on 10 papers with human judges, 
-and find that their system reproduces the papers 29.46\% of the time.
-
-Lin et. al.\cite{lin2025} validate their solution by integrating with Paper2Code\cite{paper2code}, which enables easy testing against 
-Paper2CodeBench\cite{paper2code} and PaperBench\cite{paperbench}.
+The same classification system, based of Gundersen 2021\cite{gundersen2021}, can be used to classify benchmarks for automated reproducibiliy systems.
+The classification is decided by which classes of systems the benchmark can test.
 
 \begin{enumerate}
-    \item Super\cite{super}
-    \item PaperBench\cite{paperbench}
-    \item Paper2CodeBench\cite{paper2code}
+    \item Paper2CodeBench\cite[pages~6--8]{paper2code} (R1 $\rightarrow$ R2)
+        \subitem is the benchmark for Paper2Code\cite{paper2code}. Reproducibility is not their main focus, but they run a small evaluation on 10 papers with human judges, 
+        and find that their system reproduces the papers 29.46\% of the time.
         \subitem 90 papers from ICLR, ICML, and NeurIPS 2024, filtered to have code repositories smaller than 70 000 tokens, and an LLM ranking.
         \subitem Evalutaion is done with an LLM judge, both with and without the original repository as reference, 
         in addition to a human evaluation by the original paper's authors.
+    \item Artisan-Bench\cite{artisan} (OR2/OR4)
+        \subitem is only used by Artisan\cite{artisan}, and consists of 23 curated software engineering papers papers with available and evaluated artifacts. 
+        The benchmark has examples in python, java, rust, scala, ocaml and bash.
+    \item Super\cite{super} (R2 $\rightarrow$ R4)
+        \subitem is a code repair/execution benchmark, that focuses on environment setup as its core challenge.
+        It contains 45 end to end problems, 152 sub-problems, and 604 automatically generated problems.
+    \item PaperBench\cite{paperbench} (R1 $\rightarrow$ R4)
+        \subitem is a full implementation benchmark that requires
+        \subitem It consists of 20 papers from ICML\cite{icml2024}, across 12 different ICML topics.
+\end{enumerate}
+\begin{comment}
     \item CORE-Bench\cite{corebench}
     \item ReplicationBench\cite{replicationbench}
     \item ReplicatorBench\cite{replicatorbench}
@@ -377,10 +407,20 @@ Paper2CodeBench\cite{paper2code} and PaperBench\cite{paperbench}.
     \item Paper2Repo\cite{autop2c}
         \subitem 8 papers. Covers training strategy optimisation, node classification, model compression, 
         parameter-effecient fine-tuning, network pruning, image classification
-    
-\end{enumerate}
+    \item EnvBench
+    \item Ds-1000
+    \item Mlagentbench
+    \item Ml-bench
+    \item From Reproduction to Replication
+    \item Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena
+    \item MLLM-as-a-Judge
+    \item GPTScore
+    \item MMReview
+    \item Reproscreener
+\end{comment}
+This literature review uncovered 18 more auto-reproducibility benchmarks, but these aren't discussed here because of time limitations.
 
-\section{Limitations}
+%\section{Limitations}
 
 
 \section{Conclusions}
@@ -389,15 +429,15 @@ Paper2CodeBench\cite{paper2code} and PaperBench\cite{paperbench}.
 \bibliography{refs}
 \newpage
 \section*{Appendix}
-\begin{itemize}
+\subsection*{Categories that were deemed "not relevant" at the end of the literature review}\label{sec:notrelevantcategories}
+\begin{itemize}\label{}
     \item Agentic Science \subitem AI systems that can conduct scientific tasks autonomously. 
     \item Prepub reproducibility \subitem Techniques that authors can use to make their research more reproducible. 
     \item Hypothesis Gen \subitem Systems that generate scientific hypotheses. 
     \item Automatic Software Engineering \subitem Systems that can do software engineering tasks autonomously. 
     \item Science-specialized LLM \subitem LLMs that are fine-tuned to be better at science. 
     \item Multi-Agent \subitem AI systems which consist of multiple collaborating agents. 
-    \item Tool calling [TODO: remove]
-    \item Figure reading 
+    \item Tool calling %[TODO: remove]
     \item Document parsing   
 \end{itemize}
 \end{document}
