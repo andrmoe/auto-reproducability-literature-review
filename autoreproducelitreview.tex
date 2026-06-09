@@ -13,11 +13,18 @@
 \usepackage{comment}
 \usepackage[colorlinks=true,citecolor=blue]{hyperref}
 \usepackage[all]{hypcap}
-\usepackage[numbers,sort&compress]{natbib}
+\usepackage[
+  backend=biber,
+  style=numeric,
+  sorting=none,
+  natbib=true
+]{biblatex}
 \pagenumbering{arabic}
 
+\addbibresource{refs.bib}
+
 % Title and Author
-\title{Auto-reproducibility literature review}
+\title{A Literature Review of Automated Reproducibility}
 \author{Andreas Moe}
 \date{2026-06-10}
 
@@ -39,8 +46,10 @@ by:
     %\item identifying gaps in the literature.
     %\item 
 \end{itemize}
-M auto-reproducibility systems and N have been identified. %[TODO: update numbers]
-P\% of these were published between 2025 and 2026, showing that there is currently a large interest in this area.
+22 auto-reproducibility systems and 22 auto-reproducibility benchmarks have been identified. 92\% %[TODO: update numbers]
+(24 out of 26\footnote{The total number discrepancy comes from 
+the fact that 18 of the 22 benchmarks weren't assessed by this review, because of time constraints.}) 
+of these were published between 2025 and 2026, showing that there is currently a large interest in this area.
 However, there is currently no published dedicated survey of this, which is why this literature review has been conducted.
 
 \section{Background}
@@ -113,7 +122,8 @@ These factors were used to assess papers:
 \end{itemize}
 "Very relevant" papers were then used to expand the search, by assessing their citations and citers.
 
-A visualization of the resulting citation graph can be seen in \autoref{fig:citationgraph} in the results section.
+A visualization portions % TODO: Fix sentence to relfect the finished diagram, if it's actually finished
+of the resulting citation graph can be seen in \autoref{fig:citationgraph} in the results section.
 
 \subsection{Categories}
 Categories of papers were created and modified for relevant papers along the way. 
@@ -423,11 +433,17 @@ This literature review uncovered 18 more auto-reproducibility benchmarks, but th
 
 %\section{Limitations}
 
+\section{Conclusion}
+The literature for automatic reproducibility has, only recently, become extensive, but there are still gaps which should be filled.
+The plurality of the attention has gone to the paper to code problem, and much less attention has been given to fully automating
+reproducibility assessments. This is reasonable, given that writing code and, to a bigger extent, successfully running code is the 
+biggest obstacle with manual reproduction. %TODO [citation needed]
+It is good then, that code repair/execution and full implementation has received a lot of attention, 
+and some full assessment systems exist for specialized research topics.
+However, I believe that fully automated, general computational reproducibility systems are within reach.
 
-\section{Conclusions}
+\printbibliography
 
-\bibliographystyle{unsrt}
-\bibliography{refs}
 \newpage
 \section*{Appendix}
 \subsection*{Categories that were deemed "not relevant" at the end of the literature review}\label{sec:notrelevantcategories}
