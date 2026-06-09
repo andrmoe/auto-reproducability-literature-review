@@ -46,10 +46,10 @@ by:
     %\item identifying gaps in the literature.
     %\item 
 \end{itemize}
-25 auto-reproducibility systems and 15 auto-reproducibility benchmarks have been identified. 92\% %[TODO: update numbers]
-(24 out of 26) %TODO: remove footnote when assessment is done
-of these were published between 2025 and 2026, showing that there is currently a large interest in this area.
-However, there is currently no published dedicated survey of this, which is why this literature review has been conducted.
+25 auto-reproducibility systems and 15 auto-reproducibility benchmarks have been identified.
+13 out of 40 (32.5\%) were published in 2026, and 24 (60\%) were published in 2025.
+This shows that there is currently a large interest in this area.
+However, there is currently, as far as I'm aware, no published dedicated survey on this, which is why this literature review has been conducted.
 
 \section{Background}
 Trisovic et al.\cite{trisovic2021} examined more than 2000 replication datasets, and found that 74\% of files crashed on initial execution. 
@@ -118,11 +118,10 @@ These factors were used to assess papers:
 \item If the context is not relevant, then the cited paper is also not relevant. (e.g. a list of papers that form a dataset for auto reproducibility)
 \item Was this paper only cited in the bibliography, and not the main text? Then it is not relevant.
 \item Does the paper's abstract relate to any of the categories. Then it's relevant. If not, then not relevant.
-%\item Some papers are borderline. They are listed here %[TODO: compile list]
 \end{itemize}
 "Very relevant" papers were then used to expand the search, by assessing their citations and citers.
 
-A visualization of portions % TODO: Fix sentence to relfect the finished diagram, if it's actually finished
+A visualization of portions % TODO: Fix sentence to reflect the finished diagram, if it's actually finished
 of the resulting citation graph can be seen in \autoref{fig:citationgraph} in the results section.
 
 \subsection{Categories}
@@ -161,36 +160,7 @@ None of the words in this review have been generated with AI, and no proofreadin
     \includegraphics[width=\textwidth]{temp/citation_graph.pdf}
     \caption{Citation graph for "very relevant" papers.}
     \label{fig:citationgraph}
-    
 \end{figure}
-\begin{comment}
-List of "very relevant" papers:
-\begin{enumerate}
-    \item Artisan\cite{artisan}
-    \item AutoReproduce\cite{autoreproduce}
-    \item Paper2Code\cite{paper2code}
-    \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents\cite{lin2025}
-    \item AutoP2C\cite{autop2c}
-    \item AutoMMLab\cite{autommlab}
-    \item Supporting Artifact Evaluation with LLMs\cite{heye2025}
-    \item Super\cite{super}
-    \item PaperBench\cite{paperbench}
-    \item Paper2CodeBench\cite{paper2code}
-    \item CORE-Bench\cite{corebench}
-    \item ReplicationBench\cite{replicationbench}
-    \item ReplicatorBench\cite{replicatorbench}
-    \item SocSciRepro-Bench\cite{socscireprobench} - Under Review at Nature Machine Intelligence
-    \item CompRep\cite{comprep}
-    \item SciReplicate-Bench\cite{scireplicatebench}
-    \item Automating Computational Reproducibility in Social Science\cite{shah2026}
-    \item LLM-Assisted Replication as Scientific Infrastructure\cite{kubota2026}
-    \item Automated Modernization of Machine Learning Engineering Notebooks for Reproducibility\cite{jin2026}
-    \item Reproducibility in NLP: What Have We Learned from the Checklist?\cite{magnusson2023}
-    \item From Reproduction to Replication: Evaluating Research Agents with Progressive Code Masking\cite{autoexperiment}
-    \item Automated Reproducibility Has a Problem Statement Problem\cite{snelleman2025}
-    \item What Papers Don't Tell You: Recovering Tacit Knowledge for Automated Paper Reproduction\cite{li2026}
-\end{enumerate}
-\end{comment}
 
 \subsection{Classification}
 Based on the terminology from Gundersen 2021\cite{gundersen2021}, 
@@ -201,6 +171,8 @@ I've created categories and abbreviations that describe the input-output behavio
         \subitem The system starts from only the paper and raw data, then writes and executes the code, before outputting the code and execution data.
     \item R1 $\rightarrow$ R3 (Full implementation + ablation)
         \subitem System writes and runs code to produce results, then hides the code from its output.
+        This somewhat pointless, but I've included it for completeness. 
+        Clearly any R1 $\rightarrow$ R4 system can easily be modified to do this.
     \item R1 $\rightarrow$ R2 (Paper to code)
         \subitem These systems take a paper as input and produce code that can be used by a different system to reproduce the results, 
         enabling the transformation of an R2 system into an R1 system.
@@ -209,6 +181,7 @@ I've created categories and abbreviations that describe the input-output behavio
         By running repaired code, a reproducer now has access to experimental data, ending up at an R4 starting point.
     \item R2 $\rightarrow$ R3 (Code repair/Execution + ablation)
         \subitem System repairs and runs code to produce results, then hides the code from its output.
+        Mostly pointless. Included for completeness.
     \item R3 $\rightarrow$ R4 (Full implementation with answer sheet)
         \subitem The implementation agent is given the experimental results to help it produce correct code. 
         It would ideally output the resulting data from its own code, instead of forwarding the original experimental data.
@@ -406,12 +379,47 @@ The classification is decided by which classes of systems the benchmark can test
         \subitem 90 papers from ICLR, ICML, and NeurIPS 2024, filtered to have code repositories smaller than 70 000 tokens, and an LLM ranking.
         \subitem Evaluation is done with an LLM judge, both with and without the original repository as reference, 
         in addition to a human evaluation by the original paper's authors.
-    \item Super\cite{super} (R2 $\rightarrow$ R4)
-        \subitem is a code repair/execution benchmark, that focuses on environment setup as its core challenge.
-        It contains 45 end to end problems, 152 sub-problems, and 604 automatically generated problems.
+    \item Paper2Repo\cite[pages~7--8]{autop2c} (R1 $\rightarrow$ R2)
+        \subitem is only used by AutoP2C.
+        It consists of 8 papers. Covers training strategy optimisation, node classification, model compression, 
+        parameter-effecient fine-tuning, network pruning, and image classification.
+        See \hyperref[itm:autop2cdesc]{AutoP2C}\cite{autop2c} in the auto-reproducibility system,
+        for input-output behaviour.
     \item PaperBench\cite{paperbench} (R1 $\rightarrow$ R4)
         \subitem is a full implementation benchmark that requires %TODO: finish
         \subitem It consists of 20 papers from ICML\cite{icml2024}, across 12 different ICML topics.
+    \item SciReplicate-Bench\cite{scireplicatebench}\label{itm:scireplicatebenchdesc} (R1 $\rightarrow$ R2)
+        \subitem benchmarks paper-to-code agents on 100 tasks from 36 NLP papers.
+    \item ReplicationBench\cite{replicationbench} (R1 $\rightarrow$ R4)
+        \subitem aims to benchmark agents on the full implementation task, on 20 astrophysics papers.
+        The agents are graded on answers to questions that require a various levels of implementation,
+        The tasks difficulty is measured on a logarithmic scale from 1 to 9, 
+        based on an estimate of how long a human non-author domain expert would take to complete the task.
+        1 corresponds to a few minutes. 9 corresponds to several weeks.
+    \item ReproduceBench\cite[pages~5--8]{autoreproduce} (R1 $\rightarrow$ R4)
+        \subitem Only used by \hyperref[itm:autoreproducedesc]{AutoReproduce}\cite{autoreproduce}.
+        \subitem 13 curated papers across diverse domains, including knowledge distillation and Partial differential equations.
+        \subitem Evaluates whether the generated code accurately reflects the paper and code by the authors, using an LLM judge.
+        \subitem Also evaluates whether the generated code reproduces the original result, using the original metric from the paper.
+    \item AutoExperiment\cite{autoexperiment} (R1/R2 $\rightarrow$ R4)
+        is a benchmark which blurs the line between full implementation, and code repair/execution.
+        This is an intentional feature, where the benchmark operator can choose a continuously varying starting point,
+        between R1 and R2. The authors call their approach to accomplish this "progressive code masking".
+        The benchmark software is configured a integer $n$. It masks out $n$ function from the dataset, 
+        which means removing a function's implementation.
+        Setting $n$ to 0 corresponds to an (R2 $\rightarrow$ R4), 
+        since the code is passed along to the agent unaltered.
+        Setting $n$ to its max value corresponds to an (R1 $\rightarrow$ R4), 
+        since all of the code is masked out.
+        One could argue that the remaining function signatures (function name, argument names, and return types)
+        don't match up with the requirement that no code is provided, 
+        but I interpret R2 to mean that the original authors made 
+        a good faith attempt to share the code used to produce the original results.
+        A code repository consisting only of function signatures would obviously not make one believe this.
+        However, a single missing function body is an oversight that can easily happen with bad version control.
+    \item Super\cite{super} (R2 $\rightarrow$ R4)
+        \subitem is a code repair/execution benchmark, that focuses on environment setup as its core challenge.
+        It contains 45 end to end problems, 152 sub-problems, and 604 automatically generated problems.
     \item CORE-Bench\cite{corebench} (R2 $\rightarrow$ R4)
         \subitem is testing agent's abilities to run code from research papers, 
         but sees its role primarily to be testing abilities the authors suspect to be important for reproducibility testing,
@@ -429,15 +437,22 @@ The classification is decided by which classes of systems the benchmark can test
         asked the agent to assess whether any experiment was reproduced.
         The first task is close: "Report the average AUC score of Had using the CTGCN-C method on the UCI dataset."
         This question leaves the assessment for reproducibility to someone/something else.
-    \item ReplicationBench\cite{replicationbench} (R1 $\rightarrow$ R4)
-        \subitem aims to benchmark agents on the full implementation task, on 20 astrophysics papers.
-        The agents are graded on answers to questions that require a various levels of implementation,
-        The tasks difficulty is measured on a logarithmic scale from 1 to 9, 
-        based on an estimate of how long a human non-author domain expert would take to complete the task.
-        1 corresponds to a few minutes. 9 corresponds to several weeks.
-    \item Artisan-Bench\cite[pages~9--17]{artisan} (OR2/OR4)
-        \subitem is only used by Artisan\cite{artisan}, and consists of 23 curated software engineering papers with available and evaluated artifacts. 
-        The benchmark has examples in python, java, rust, scala, ocaml and bash.
+    \item EnvBench\cite{envbench} (R2 $\rightarrow$ R4)
+        \subitem is a benchmark for code repair/execution agents.
+        It only checks the agents capability to set up a correct execution environment.
+        It encompasses 994 code repositories, 
+        and uses only generic static analysis tools to judge performance,
+        which is what enable the size of the benchmark.
+    \item MMReview\cite{mmreview} (IR1)
+        \subitem is a benchmark for automated peer review.
+        Peer review is not a reproducibility assessment,
+        but it fits the input-output behaviour of IR1,
+        since it is a judgment of paper quality.
+        I've identified one (of potentially many) techniques from the 
+        paper that are transferable to benchmarks for automated reproducibility assessment.
+        The paper uses adverserially constructed inputs, 
+        to test whether LLM agents can overcome their sycophantic tendencies\cite{liu2025}.
+        This involves inserting fake strengths and weaknesses into papers before giving it to the agent.
     \item ReplicatorBench\cite{replicatorbench}\label{itm:replicatorbenchdesc} (IR1/IR2)
         \subitem is one of few reproducibility assessment benchmark, 
         that includes negative examples, and by that I mean irreproducible claims.
@@ -480,58 +495,18 @@ The classification is decided by which classes of systems the benchmark can test
             A score of 2 indicates identifiable inconsistencies in the code that do not alter the paper’s major findings." (Interpretation reproducible)
             \item[3:] "there are minor issues at the display and reporting level, e.g., rounding errors." (Analysis reproducible)
             \item[4:] "major findings are fully reproducible." (Outcome reproducible)
+    \item Artisan-Bench\cite[pages~9--17]{artisan} (OR2/OR4)
+        \subitem is only used by Artisan\cite{artisan}, and consists of 23 curated software engineering papers with available and evaluated artifacts. 
+        The benchmark has examples in python, java, rust, scala, ocaml and bash.
         \end{enumerate}
-    \item ReproduceBench\cite[pages~5--8]{autoreproduce} (R1 $\rightarrow$ R4)
-        \subitem Only used by \hyperref[itm:autoreproducedesc]{AutoReproduce}\cite{autoreproduce}.
-        \subitem 13 curated papers across diverse domains, including knowledge distillation and Partial differential equations.
-        \subitem Evaluates whether the generated code accurately reflects the paper and code by the authors, using an LLM judge.
-        \subitem Also evaluates whether the generated code reproduces the original result, using the original metric from the paper.
-    \item SciReplicate-Bench\cite{scireplicatebench}\label{itm:scireplicatebenchdesc} (R1 $\rightarrow$ R2)
-        \subitem benchmarks paper-to-code agents on 100 tasks from 36 NLP papers.
-    \item Paper2Repo\cite[pages~7--8]{autop2c}
-        \subitem is only used by AutoP2C.
-        It consists of 8 papers. Covers training strategy optimisation, node classification, model compression, 
-        parameter-effecient fine-tuning, network pruning, and image classification.
-        See \hyperref[itm:autop2cdesc]{AutoP2C}\cite{autop2c} in the auto-reproducibility system,
-        for input-output behaviour.
-    \item EnvBench\cite{envbench} (R2 $\rightarrow$ R4)
-        \subitem is a benchmark for code repair/execution agents.
-        It only checks the agents capability to set up a correct execution environment.
-        It encompasses 994 code repositories, 
-        and uses only generic static analysis tools to judge performance,
-        which is what enable the size of the benchmark.
-    \item AutoExperiment\cite{autoexperiment} (R1/R2 $\rightarrow$ R4)
-        is a benchmark which blurs the line between full implementation, and code repair/execution.
-        This is an intentional feature, where the benchmark operator can choose a continuously varying starting point,
-        between R1 and R2. The authors call their approach to accomplish this "progressive code masking".
-        The benchmark software is configured a integer $n$. It masks out $n$ function from the dataset, 
-        which means removing a function's implementation.
-        Setting $n$ to 0 corresponds to an (R2 $\rightarrow$ R4), 
-        since the code is passed along to the agent unaltered.
-        Setting $n$ to its max value corresponds to an (R1 $\rightarrow$ R4), 
-        since all of the code is masked out.
-        One could argue that the remaining function signatures (function name, argument names, and return types)
-        don't match up with the requirement that no code is provided, 
-        but I interpret R2 to mean that the original authors made 
-        a good faith attempt to share the code used to produce the original results.
-        A code repository consisting only of function signatures would obviously not make one believe this.
-        However, a single missing function body is an oversight that can easily happen with bad version control.
-    \item MMReview\cite{mmreview} (IR1)
-        \subitem is a benchmark for automated peer review.
-        Peer review is not a reproducibility assessment,
-        but it fits the input-output behaviour of IR1,
-        since it is a judgment of paper quality.
-        I've identified one (of potentially many) techniques from the 
-        paper that are transferable to benchmarks for automated reproducibility assessment.
-        The paper uses adverserially constructed inputs, 
-        to test whether LLM agents can overcome their sycophantic tendencies\cite{liu2025}.
-        This involves inserting fake strengths and weaknesses into papers before giving it to the agent.
-    
 \end{enumerate}
 
-%\subsection{Other Relevant Work}
+\section{Statistics}
+Here are the statistics on how many systems end up fulfilling each classification. 
+Systems that fulfill multiple classes are counted multiple times.
 
-%\section{Limitations}
+
+\section{Limitations} % TODO: write
 
 \section{Conclusion}
 The literature for automatic reproducibility has, only recently, become extensive, but there are still gaps which should be filled.
