@@ -28,26 +28,12 @@ def task_compile_pdf():
     return {
         "actions": [
             [
-                "pdflatex",
+                "latexmk",
+                "-f",
+                "-pdf",
                 "-interaction=nonstopmode",
-                "-output-directory=.",
                 f"{report_name}.tex",
-            ],
-            [
-                "bibtex", f"{report_name}"
-            ],
-            [
-                "pdflatex",
-                "-interaction=nonstopmode",
-                "-output-directory=.",
-                f"{report_name}.tex",
-            ],
-            [
-                "pdflatex",
-                "-interaction=nonstopmode",
-                "-output-directory=.",
-                f"{report_name}.tex",
-            ],
+            ]
         ],
         "file_dep": ["refs.bib", f"{report_name}.tex"] + list(get_file_refs(f"{report_name}.tex")),
         "targets": [f"{report_name}.pdf"],
