@@ -17,7 +17,7 @@
 \pagenumbering{arabic}
 
 % Title and Author
-\title{Auto-reproducability literature review}
+\title{Auto-reproducibility literature review}
 \author{Andreas Moe}
 \date{2026-06-10}
 
@@ -31,7 +31,7 @@ LLMs are a promising tool for fully automating reproduction of experiments that 
 This literature review examines work done in this area, 
 by:
 \begin{itemize}
-    \item developing a classification system for auto-reproducibiliy systems and benchmarks of auto-reproducibility systems.
+    \item developing a classification system for auto-reproducibility systems and benchmarks of auto-reproducibility systems.
     \item identifying as many existing systems and benchmark as possible.
     %\item summarizing common design choices for auto-reproducibility systems and benchmarks.
     %\item discussing limitations of current approaches
@@ -113,7 +113,7 @@ These factors were used to assess papers:
 \end{itemize}
 "Very relevant" papers were then used to expand the search, by assessing their citations and citers.
 
-A visualization of the resulting citation graph can be seen in \autoref{fig:citationgraph}.
+A visualization of the resulting citation graph can be seen in \autoref{fig:citationgraph} in the results section.
 
 \subsection{Categories}
 Categories of papers were created and modified for relevant papers along the way. 
@@ -134,6 +134,7 @@ Categories used:
 \end{itemize}
 
 Some whole categories were deemed not relevant only at the end of the process. \hyperref[sec:notrelevantcategories]{They can be found in the appendix}.
+
 \subsection{Use of AI tools}
 LLM tools were used to create figures, decide on styling, extract citations from papers (unsuccessfully), 
 and as a conversation partner when trying to understand papers 
@@ -229,7 +230,7 @@ of tested papers.
         \subitem approaches the paper to code problem by drawing inspiration from typical software development workflows.
         They decompose the task into three coordinated stages: Planning, analysis and coding.
         Planning is then further decomposed into overall plan, architecture design, logic design and configuration.
-        The analysis stage deals with the behaviour of each file. Given a spefific file from the planning stage, 
+        The analysis stage deals with the behaviour of each file. Given a specific file from the planning stage, 
         the system generates a detailed analysis of what needs to be implemented in that file.
         The final coding stage produces a full code repository, by generating one file at the time, using that file's analysis.
         Importantly, this is done "bottom up", so that the agents have access to the complete code for the necessary dependencies.
@@ -257,7 +258,7 @@ of tested papers.
         The agents coordinate through an explicit shared memory. This decouples information storage from agent reasoning.
     \item Deep-Reproducer\cite{deepreproducer} (R1 $\rightarrow$ R2)
         \subitem approaches the paper to code problem by searching the web for existing repositories that can be used as a starting point for the coding task. 
-        It does this after first having done a comprehensive paper analysis. This summarises six critical dimensions: 
+        It does this after first having done a comprehensive paper analysis. This summarizes six critical dimensions: 
         Data requirements, Methodological approaches, Task objectives, Research methodology, Related work and Foundational methods.
     \item RePro (a)\cite{zhou2025} (R1 $\rightarrow$ R2)
         \subitem approaches the paper to code problem by extracting with authors call a paper fingerprint. 
@@ -372,7 +373,7 @@ and some authors who have contributed to the field had slightly different proble
 This makes it difficult to compare performance across systems.
 Due to the differing problem statements, most papers primarily (and sometimes exclusively) develop their own dataset and scoring system.
 
-The same classification system, based of Gundersen 2021\cite{gundersen2021}, can be used to classify benchmarks for automated reproducibiliy systems.
+The same classification system, based of Gundersen 2021\cite{gundersen2021}, can be used to classify benchmarks for automated reproducibility systems.
 The classification is decided by which classes of systems the benchmark can test.
 
 \begin{enumerate}
