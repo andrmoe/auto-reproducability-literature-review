@@ -165,7 +165,7 @@ category_colors = {
     "journal policy": "#ffaaff"
 }
 
-def draw_graph(graph: nx.DiGraph, output: str = "citation_graph.pdf") -> None:
+def draw_graph(graph: nx.DiGraph, output: str = "temp/citation_graph.pdf") -> None:
     pos = compute_positions(graph)
     fig, ax = plt.subplots(figsize=(16, 10))
 

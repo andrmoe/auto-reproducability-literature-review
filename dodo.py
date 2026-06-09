@@ -35,7 +35,7 @@ def task_compile_pdf():
                 f"{report_name}.tex",
             ]
         ],
-        "file_dep": ["refs.bib", f"{report_name}.tex"] + list(get_file_refs(f"{report_name}.tex")),
+        "file_dep": ["refs.bib", f"{report_name}.tex", "temp/citation_graph.pdf"],
         "targets": [f"{report_name}.pdf"],
     }
 
@@ -46,6 +46,6 @@ def task_generate_citation_graph():
             ["python", "citation_graph.py"]
         ],
         "file_dep": ["citation_graph.py", "refs.bib"],
-        "targets": ["citation_graph.pdf"]
+        "targets": ["temp/citation_graph.pdf"]
     }
 
