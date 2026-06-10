@@ -8,7 +8,7 @@ import textwrap
 import bibtexparser
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch
+from matplotlib.patches import FancyArrowPatch, Patch
 import networkx as nx
 
 
@@ -179,7 +179,7 @@ def draw_graph(graph: nx.DiGraph, output: str = "temp/citation_graph.pdf") -> No
 
         arrow = FancyArrowPatch(
             (x1, y1),
-            (x2+10, y2),
+            (x2+20, y2),
             arrowstyle="-|>",
             mutation_scale=20,
             linewidth=1.5,
@@ -191,28 +191,31 @@ def draw_graph(graph: nx.DiGraph, output: str = "temp/citation_graph.pdf") -> No
             zorder=1,
         )
         ax.add_patch(arrow)
-
+    legend_elements = []
     for node, data in graph.nodes(data=True):
         x, y = pos[node]
         label = make_label(data)
-        
         ax.text(
             x,
             y,
             label,
             ha="center",
             va="center",
-            fontsize=8,
+            fontsize=12,
             family="serif",
             zorder=3,
             bbox={
                 "boxstyle": "round,pad=0.35,rounding_size=0.15",
                 "facecolor": category_colors[data["category"]],
                 "edgecolor": generation_colors[data["generation"]],
-                "linewidth": 2,
+                "linewidth": 4,
             },
         )
-
+    legend_elements = [Patch(facecolor=color, edgecolor="black", label=category) for category, color in category_colors.items()] + \
+                      [Patch(facecolor=generation_colors[generation], edgecolor="black", 
+                          label="Seed papers" if generation == 0 else f"{generation}. generation") 
+                          for generation in range(4)]
+    ax.legend(handles=legend_elements, title="Legend")
     ax.xaxis_date()
     ax.xaxis.set_major_locator(mdates.YearLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))

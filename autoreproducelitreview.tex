@@ -13,6 +13,12 @@
 \usepackage{comment}
 \usepackage[colorlinks=true,citecolor=blue]{hyperref}
 \usepackage[all]{hypcap}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{subcaption}
 \usepackage[
   backend=biber,
   style=numeric,
@@ -56,16 +62,16 @@ Trisovic et al.\cite{trisovic2021} examined more than 2000 replication datasets,
 Even after code cleaning, 56\% crashed. This means that, currently, significant work is needed in order to reproduce computational research,
 even when the authors provide the code that was used in the experiments. However, being able to rerun code and get the same result is not full reproducibility.
 Sometimes, the paper excludes important details that are needed to reproduce the experiment. %[citation needed]
-This means that these detail can only be found in the associated code,
+This means that these details can only be found in the associated code,
 preventing the reader from developing a full understanding of the experiment. 
 It's therefore desirable that an experiment should be reproducible based only on the paper.
 Edward Raff\cite{raff2019} tried to replicate 255 papers this way, and was able to replicate 162 of them (63.5\%), 
 where replication was defined as confirming more than 75\% of the claims in the paper.
 An important aspect of judging whether a paper has been reproduced, is to decide whether a non-identical result leads to the same conclusion.
 This is very common in ML, because most algorithms have a non-deterministic element. 
-Raff\cite{raff2019}, for example uses an order-of-magnitude for claimed improvements (i.e. the paper claims 700x faster, but reproducer sees 300x).
+Raff\cite{raff2019}, for example, uses an order-of-magnitude threshold for claimed improvements (i.e. the paper claims 700x faster, but reproducer sees 300x).
 
-Odd Erik Gundersen\cite{gundersen2021} lays out four reproducibility types that categorize distinctions like these:
+Gundersen 2021\cite{gundersen2021} lays out four reproducibility types that categorize distinctions like these:
 \begin{itemize}
     \item R1: Only the textual description of the experiment and raw data is provided.
         \subitem This includes the reproductions in Raff 2019\cite{raff2019}.
@@ -109,8 +115,8 @@ The search began with these papers
 \end{enumerate}
 
 from earlier work by Odd Erik Gundersen, Thijs Snelleman and Peter Lawrence. 
-Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "very relevant".
-Google Scholar\cite{googlescholar} was used to find out which papers have cited the "very relevant" papers.
+Almost all papers that cited (or were cited by) these papers, were classed as "not relevant", "relevant" or "included".
+Google Scholar\cite{googlescholar} was used to find out which papers have cited the "included" papers.
 Queries were made between March and June 2026.
 These factors were used to assess papers:
 \begin{itemize}
@@ -119,14 +125,26 @@ These factors were used to assess papers:
 \item Was this paper only cited in the bibliography, and not the main text? Then it is not relevant.
 \item Does the paper's abstract relate to any of the categories. Then it's relevant. If not, then not relevant.
 \end{itemize}
-"Very relevant" papers were then used to expand the search, by assessing their citations and citers.
+Papers that described automated reproducibility systems, or benchmarks of them, were categorized as "included".
+Other papers that were assessed to be important to automated reproducibility, based on personal judgement, were also categorized as "included".
+"included" papers were then used to expand the search, by assessing their citations and citers.
 
-A visualization of portions % TODO: Fix sentence to reflect the finished diagram, if it's actually finished
-of the resulting citation graph can be seen in \autoref{fig:citationgraph} in the results section.
+A visualization of portions of the resulting citation graph can be seen in \autoref{fig:citationgraph}.
+It shows how the seed papers generate the 1. generation of discovered papers, which in turn generate the 2. generation, and so on.
+It also shows that one generation generates papers in the next generation backwards in time through its citations, 
+and forwards in time through papers that cite \emph{it}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{temp/citation_graph.pdf}
+    \caption{Partial citation graph for "included" papers.
+    Seed papers are on top, and papers lower down were discovered after snowballing.}
+    \label{fig:citationgraph}
+\end{figure}
 
 \subsection{Categories}
 Categories of papers were created and modified for relevant papers along the way. 
-The point of this is to group similar papers together, for summarizing the literature, and comparison.
+The point of this is to group similar papers together, for summarizing the literature, and for comparison.
 The categories used were:
 
 \begin{itemize}
@@ -143,35 +161,16 @@ The categories used were:
 
 Some whole categories were deemed not relevant only at the end of the process. \hyperref[sec:notrelevantcategories]{They can be found in the appendix}.
 
-\subsection{Use of AI tools}
-LLM tools were used to create figures, decide on styling, extract citations from papers (unsuccessfully), 
-and as a conversation partner when trying to understand papers 
-(however, this wasn't done to any of the papers I've cited in this review, as far as I can recall), 
-as well as helping with latex syntax.
-None of the words in this review have been generated with AI, and no proofreading or feedback has been done with AI.
-
-\section{Results}
-1050 papers were assessed in total. Of these 28 were assessed to be "very relevant", 511 were "relevant", 617 were "not relevant". 
-9 papers that should be assessed according to the method, weren't assessed for various reasons.
-%Here is an overview of these cases: %[TODO]
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{temp/citation_graph.pdf}
-    \caption{Citation graph for "very relevant" papers.}
-    \label{fig:citationgraph}
-\end{figure}
-
-\subsection{Classification}
+\subsection{Classification of Automatic Reproducibility Systems}
 Based on the terminology from Gundersen 2021\cite{gundersen2021}, 
 I've created categories and abbreviations that describe the input-output behaviour of auto-reproducibility systems:
 
-\begin{itemize}
+\begin{itemize}\label{itm:classification}
     \item R1 $\rightarrow$ R4 (Full implementation)
         \subitem The system starts from only the paper and raw data, then writes and executes the code, before outputting the code and execution data.
     \item R1 $\rightarrow$ R3 (Full implementation + ablation)
         \subitem System writes and runs code to produce results, then hides the code from its output.
-        This somewhat pointless, but I've included it for completeness. 
+        This somewhat pointless, and will therefore not be mentioned again in this review, but I've included it for completeness.
         Clearly any R1 $\rightarrow$ R4 system can easily be modified to do this.
     \item R1 $\rightarrow$ R2 (Paper to code)
         \subitem These systems take a paper as input and produce code that can be used by a different system to reproduce the results, 
@@ -181,7 +180,7 @@ I've created categories and abbreviations that describe the input-output behavio
         By running repaired code, a reproducer now has access to experimental data, ending up at an R4 starting point.
     \item R2 $\rightarrow$ R3 (Code repair/Execution + ablation)
         \subitem System repairs and runs code to produce results, then hides the code from its output.
-        Mostly pointless. Included for completeness.
+        Mostly pointless. Included for completeness. Won't be mentioned again.
     \item R3 $\rightarrow$ R4 (Full implementation with answer sheet)
         \subitem The implementation agent is given the experimental results to help it produce correct code. 
         It would ideally output the resulting data from its own code, instead of forwarding the original experimental data.
@@ -202,6 +201,167 @@ by feeding the output of one into the other, and end up with an OR2 system. In t
     \item OR4 judge
 \end{enumerate}
 
+\subsection{Use of AI tools}
+LLM tools were used to create figures, decide on styling, extract citations from papers (unsuccessfully), 
+and as a conversation partner when trying to understand papers 
+(however, this wasn't done to any of the papers I've cited in this review, as far as I can recall), 
+as well as helping with latex syntax.
+None of the words in this review have been generated with AI, and no proofreading or feedback has been done with AI.
+
+\section{Results}
+1156 papers were assessed in total. Of these 28 were "included", 511 were "relevant", 617 were "not relevant". 
+Papers that were assessed to be "relevant", are not included in this review, because there are too many of them.
+I was unsure how many relevant papers existed when I began this review, 
+and many of the "included" papers weren't published yet at that point.
+It therefore made sense to cast a wide net. It turned out that the field is large,
+so the "relevant" category was dismissed entirely.
+6 papers that should be assessed according to the method, weren't assessed because I couldn't access them, and
+the recursive "snowballing" ended when I ran out time to expand the review further.
+
+\subsection{Statistics}
+Here are the statistics on how many systems end up fulfilling each \hyperref[itm:classification]{classification from the method section}. 
+Systems that fulfill multiple classes are counted multiple times.
+
+\begin{table}[H]
+\centering
+\caption{Statistics on reviewed auto-reproducibility systems and
+benchmarks.}
+\label{tab:reprostatstable}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}Xrr@{}}
+\toprule
+\textbf{Class} & \textbf{Reproduction systems} & \textbf{Benchmarks} \\
+\midrule
+R1 \( \rightarrow \) R2: Paper to code & 10 & 3 \\
+R1 \( \rightarrow \) R4: Full implementation & 5 & 4 \\
+R3 \( \rightarrow \) R4: Full implementation with answer sheet & 0 & 0 \\
+R2 \( \rightarrow \) R4: Code repair/Execution & 5 & 4 \\
+OR1: outcome reproduction w/ paper only & 2 & 0 \\
+OR2: outcome reproduction w/ paper \& code & 4 & 2 \\
+OR3: outcome w/ paper \& experiment data & 0 & 0 \\
+OR4: outcome reproduction w/ paper, code \& experiment data & 2 & 1 \\
+AR1: analysis reproduction w/ paper only & 0 & 0 \\
+AR2: analysis reproduction w/ paper \& code & 2 & 1 \\
+AR3: analysis reproduction w/ paper \& experiment data & 0 & 0 \\
+AR4: analysis reproduction w/ paper, code \& experiment data & 0 & 0 \\
+IR1: interpretation reproduction w/ paper only & 1 & 2 \\
+IR2: interpretation reproduction w/ paper \& code & 4 & 3 \\
+IR3: reproduction w/ paper \& experiment data & 0 & 0 \\
+IR4: interpretation reproduction w/ paper, code \& experiment data & 0 & 0 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    xbar,
+    width=7cm,
+    height=10cm,
+    xmin=0,
+    xmax=10,
+    bar width=4pt,
+    xmajorgrids=true,
+    grid style={gray!40},
+    axis x line*=bottom,
+    axis y line*=left,
+    xtick={0,2,4,6,8,10},
+    ytick=data,
+    y dir=reverse,
+    enlarge y limits=0.06,
+    xlabel={Count},
+    legend style={
+        at={(0.5,1.02)},
+        anchor=south,
+        legend columns=2,
+        draw=none,
+        font=\footnotesize
+    },
+    symbolic y coords={
+        c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16
+    },
+    yticklabels={
+        R1 \( \rightarrow \) R2: Paper to code,
+        R1 \( \rightarrow \) R4: Full implementation,
+        R3 \( \rightarrow \) R4: Full implementation with answer sheet,
+        R2 \( \rightarrow \) R4: Code repair/Execution,
+        OR1: outcome reproduction w/ paper only,
+        OR2: outcome reproduction w/ paper \& code,
+        OR3: outcome w/ paper \& experiment data,
+        {OR4: outcome reproduction w/ paper, code \& experiment data},
+        AR1: analysis reproduction w/ paper only,
+        AR2: analysis reproduction w/ paper \& code,
+        AR3: analysis reproduction w/ paper \& experiment data,
+        {AR4: analysis reproduction w/ paper, code \& experiment data},
+        IR1: interpretation reproduction w/ paper only,
+        IR2: interpretation reproduction w/ paper \& code,
+        IR3: reproduction w/ paper \& experiment data,
+        {IR4: interpretation reproduction w/ paper, code \& experiment data}
+    },
+    yticklabel style={
+        align=right,
+        font=\footnotesize,
+        xshift=-0.5em
+    },
+    tick label style={font=\footnotesize},
+    scale only axis
+]
+\addplot[
+    xbar,
+    bar shift=-2pt,
+    fill=blue!60,
+    draw=blue!60
+] coordinates {
+    (10,c1)
+    (5,c2)
+    (0,c3)
+    (5,c4)
+    (2,c5)
+    (4,c6)
+    (0,c7)
+    (2,c8)
+    (0,c9)
+    (2,c10)
+    (0,c11)
+    (0,c12)
+    (1,c13)
+    (4,c14)
+    (0,c15)
+    (0,c16)
+};
+
+\addplot[
+    xbar,
+    bar shift=2pt,
+    fill=red!70,
+    draw=red!70
+] coordinates {
+    (3,c1)
+    (4,c2)
+    (0,c3)
+    (4,c4)
+    (0,c5)
+    (2,c6)
+    (0,c7)
+    (1,c8)
+    (0,c9)
+    (1,c10)
+    (0,c11)
+    (0,c12)
+    (2,c13)
+    (3,c14)
+    (0,c15)
+    (0,c16)
+};
+
+\legend{Auto-reproducibility systems, Benchmarks}
+\end{axis}
+\end{tikzpicture}
+\caption{Statistics on reviewed auto-reproducibility systems and
+benchmarks.}
+\label{fig:classchart}
+\end{figure}
+
 \subsection{Auto reproducibility systems}
 Significant work has been done on auto-reproduction systems. 
 These are the systems that were identified by the literature review:
@@ -209,14 +369,13 @@ These are the systems that were identified by the literature review:
     \item Paper2Code\cite{paper2code} (R1 $\rightarrow$ R2)
         \subitem approaches the paper to code problem by drawing inspiration from typical software development workflows.
         They decompose the task into three coordinated stages: Planning, analysis and coding.
-        Planning is then further decomposed into overall plan, architecture design, logic design and configuration.
+        Planning is then further decomposed into an overall plan, architecture design, logic design and configuration.
         The analysis stage deals with the behaviour of each file. Given a specific file from the planning stage, 
         the system generates a detailed analysis of what needs to be implemented in that file.
         The final coding stage produces a full code repository, by generating one file at the time, using that file's analysis.
         Importantly, this is done "bottom up", so that the agents have access to the complete code for the necessary dependencies.
     \item Enhancing Automated Paper Reproduction via Prompt-Free Collaborative Agents\cite{lin2025} (R1 $\rightarrow$ R2)
-        \subitem builds on the Paper2Code framework, and aims to remove human-crafted system prompts and verification functions %[TODO: find out what this is?] 
-            that are present in self-refine. %[citation needed]
+        \subitem builds on the Paper2Code framework, and aims to remove human-crafted system prompts.
             The authors validate their solution by integrating with Paper2Code\cite{paper2code}, which enables easy testing against 
             Paper2CodeBench\cite{paper2code} and PaperBench\cite{paperbench}.
     \item AutoP2C\cite{autop2c}\label{itm:autop2cdesc} (R1 $\rightarrow$ R2)
@@ -224,7 +383,7 @@ These are the systems that were identified by the literature review:
         The first stage analyzes well-established ML code repositories, looking for common architectural patterns, 
         in order to produce a template for the final repository.
         The second stage parses the pdf of the paper, extracting the necessary information for code implementation.
-        The third stage is hierarchical task decomposer, that takes the distilled information and the template, and creates an implementation plan.
+        The third stage is a hierarchical task decomposer, that takes the distilled information and the template, and creates an implementation plan.
         The final stage, takes task descriptions from the third stage and transforms them into an executable code repository. 
         It does this through an implementation-verification loop.
         The loop terminates when the code reproduces the results in the paper.
@@ -240,85 +399,26 @@ These are the systems that were identified by the literature review:
         \subitem approaches the paper to code problem by searching the web for existing repositories that can be used as a starting point for the coding task. 
         It does this after first having done a comprehensive paper analysis. This summarizes six critical dimensions: 
         Data requirements, Methodological approaches, Task objectives, Research methodology, Related work and Foundational methods.
-    \item RePro (a)\cite{zhou2025} (R1 $\rightarrow$ R2)
-        \subitem approaches the paper to code problem by extracting with authors call a paper fingerprint. 
+    \item RePro\cite{zhou2025} (R1 $\rightarrow$ R2)
+        \subitem approaches the paper to code problem by extracting what authors call a paper fingerprint. 
         This is a set of atomic pass-or-fail criteria that act as supervisory signals to the coding agents,
         guiding them to a correct implementation. A verifier agent uses the pass-or-fail criteria to give succinct feedback to the coding agents.
     \item NERFIFY\cite{nerfify} (R1 $\rightarrow$ R2)
         \subitem The authors restrict the paper to code problem to neural radiance field computer vision papers. 
         This restriction lets them constrain the agents' actions to producing architecturally correct code, and use a specialized critique agent.
-    \item AutoReproduce\cite{autoreproduce}\label{itm:autoreproducedesc} (R1 $\rightarrow$ R4)
-        \subitem approaches the full implementation problem by first establishing the necessary implicit domain knowledge. 
-        The idea is that a key limiting factor on other auto-reproducibility systems is that LLMs lack this knowledge by default, 
-        and that the author's paper lineage algorithm can establish it. A multi-agent system then writes the code and executes the experiments.
     \item PaperRepro (a)\cite{li2026}\label{itm:li2026desc} (R1 $\rightarrow$ R2)
         \subitem has as its contribution PaperRepro, which must not be confused with 
         \hyperref[itm:paperreprodesc]{PaperRepro by Zhang et al.}\cite{paperrepro}.
         The system attempts to solve the paper to code problem through distinct stages.
         The first stage builds and prunes the citation graph, in order to surface necessary tacit knowledge.
         The next stage uses the paper and surfaced tacit knowledge to create the code implementation, 
-        through execution-feedback refinement. %[TODO: fact check]
-    \item ResearchCodeAgent\cite{researchcodeagent} (R1/R2 $\rightarrow$ R4)
-        \subitem approaches full implementation and code repair/execution problem with a multi-agent system. 
-        It consists of a planner and a worker. These each have a bespoke set of action that they can take to mutate their environments.
-        Several actions that the planner can take invoke the worker to do a specified task. 
-        The result of that task is returned to the planner when done.
-    \item Jailbreak Foundry\cite{jailbreakfoundry} (R1/R2 $\rightarrow$ R4)
-        \subitem approaches the full implementation and code repair/execution problem, restricted to papers on LLM jailbreak attacks, 
-        by using a multi-agent system, that does iterative planning, implementation and fidelity checks.
-        The target for code is a module, that is compatible with JBF-LIB, a library by the author, 
-        which provides a standard interface to produce attack benchmarks.
-        The authors' intent is not to assess the reproducibility of proposed jailbreaks. 
-        They are instead focusing on shortening the time between the publication of a jailbreak, 
-        and when mitigations can be tested, by automatically creating benchmark to develop against.
-        Jailbreak Foundry does not qualify to be a reproducibility system, 
-        because it doesn't explicitly test the jailbreaks against the models used in the original paper.
-        However, I suspect that this would be a trivial extension to add.
-        The system can act both as R1 $\rightarrow$ R4 and R2 $\rightarrow$ R4, depending on whether existing code is available.
-    \item LockForge\cite{lockforge} (OR1)
-        \subitem restricts the OR1 problem to logic locking research in integrated circuits.
-        Logic locking refers to techniques for designing integrated circuits, that restrict functionality, 
-        unless the user is authorized. This is meant to prevent IP piracy, counterfeiting, malicious modification, 
-        and reverse engineering, among other concerns.
-        The multi-agent system consists of 5 stages: forethoughts, implementation, refinement loop, smoke tests, and validation.
-        Reproducibility is a part of the final validation. It works by measuring fidelity of code execution on paper-specified benchmarks.
-    \item Artisan\cite{artisan} (OR2/OR4)
-        \subitem approaches the code repair/execution task, which they refer to as artifact evaluation, 
-        by using a single coding agent, that is guided by two judges.
-        One judge is an LLM that gives feedback on how well the agent's code represents the paper's methodology.
-        The other judge is entirely hand-coded, and compares the computed output from the coder's script, to that of the original artifact.
-        It gives a simple pass/fail for each value in the result. 
-        The systems preprocessing has obfuscated the results from the paper and other artifacts,
-        in order to prevent the agent from simply copying the results.
-        However, the authors had to implement even further measures to mitigate this to an acceptable level.
-        It is unclear whether this should be classified as OR2 or OR4, since the experimental data is required for it to operate. 
-        However, the idea is to produce a reproduction script, which doesn't depend on it.
-    \item Supporting Artifact Evaluation with LLMs\cite{heye2025} (OR4*) %[TODO: reassess]
-        \subitem restricts the OR1 problem to computer security papers. 
-        \subitem Partial automation of computer security reproduction. %[TODO: finish]
-        "Large Language Models (LLMs) can provide powerful support for AE tasks: (i) text-based reproducibility rating, 
-        (ii) autonomous sandboxed execution environment preparation, and (iii) assessment of methodological pitfalls."
-    \item Automating Computational Reproducibility in Social Science\cite{shah2026} (R2 $\rightarrow$ R4)
-        \subitem approaches the code repair/execution problem in two ways: A prompt based workflow and an agent based workflow.
-        The prompt based workflow work by feeding code, error logs, and a prompt to an LLM.
-        The LLM then attempt a single shot repair which is then executed. This goes back to the beginning, with the new code and errors,
-        if the code fails to execute correctly.
-        The agent workflow uses commercial off the shelf coding agents, specifically OpenCode\cite{opencode} and Claude Code\cite{claudecode}.
-    \item Computational Reproducibility of R Code Supplements on OSF\cite{saju2025} (R2 $\rightarrow$ R4)
-        \subitem approaches the code repair/execution task with a light touch. It does not use AI, or modify code.
-        It only attempts to construct an environment where the code will run unmodified.
-        It then publishes the environment as a Docker image, along with the execution logs.
-    \item PaperRepro (b)\cite{paperrepro} (OR2/AR2/IR2)\label{itm:paperreprodesc}
-        \subitem not to be confused with \hyperref[itm:li2026desc]{PaperRepro by Li et al.}\cite{li2026}, 
-        approaches the problem of assessing reproducibility of papers and available code, with a two stage, multi-agent system.
-        The system consists of an execution stage, and an evaluation stage.
-        A setup agent configures the environment and creates make plan for the reproduction attempt.
-        An execution agent follows the plan and runs the script it has written, which produces research artifacts.
-        In the evaluation stage, a scoring agent evaluates reproducibility, using the reproduced artifacts, 
-        the paper's reported results, and an execution summary. A report agent aggregates everything into a reproduction report.
-        The reason why all reproducibility levels are applicable, is because PaperRepro\cite{paperrepro} conforms to REPRO-Bench\cite{reprobench}, 
-        which requires the system to specify which level has been attained. See the discussion of REPRO-Bench
-        in the \hyperref[itm:reprobenchatbenchmarks]{benchmark section}.
+        through execution-feedback refinement.
+    \item Sci-Reproducer\cite[pages~6--7]{scireplicatebench} (R1 $\rightarrow$ R2)
+        \subitem is the default agent for \hyperref[itm:scireplicatebenchdesc]{SciReplicate-Bench}\cite{scireplicatebench}.
+    \item AutoReproduce\cite{autoreproduce}\label{itm:autoreproducedesc} (R1 $\rightarrow$ R4)
+        \subitem approaches the full implementation problem by first establishing the necessary implicit domain knowledge. 
+        The idea is that a key limiting factor on other auto-reproducibility systems is that LLMs lack this knowledge by default, 
+        and that the author's paper lineage algorithm can establish it. A multi-agent system then writes the code and executes the experiments.
     \item From paper to benchmark\cite{theiler2026} (R1 $\rightarrow$ R4)
         \subitem takes on full implementation within the Prognostics and Health Management (PHM) field, or as they refer to the problem:
         "We formulate framework-grounded agentic
@@ -329,29 +429,87 @@ These are the systems that were identified by the literature review:
         The aim of this is to make code generation verifiable.
     \item AI Copilots for Reproducibility in Science\cite{bibal2025} (R1/R2 $\rightarrow$* R4) %[TODO: add footnote on *]
         \subitem approaches full implementation and code repair/execution as an AI-human collaboration, 
-            where the AI system generates a Jupyter notebook, based on the paper and, optionally, existing code.
+            where the AI system generates a Jupyter notebook, based on the paper (and existing code if available/desired).
             The idea is that the agent shouldn't try to resolve ambiguities itself, 
             but instead prompt the human researcher on how these should be resolved.
             I've not classed this system as an assessment system, because the paper has nothing to say on how 
             the researcher should decide if an experiment has been successfully reproduced.
+    \item ResearchCodeAgent\cite{researchcodeagent} (R1/R2 $\rightarrow$ R4)
+        \subitem approaches full implementation and code repair/execution problem with a multi-agent system. 
+        It consists of a planner and a worker. These each have a bespoke set of actions that they can take to mutate their environments.
+        Several actions that the planner can take invoke the worker to do a specified task. 
+        The result of that task is returned to the planner when done.
+    \item Jailbreak Foundry\cite{jailbreakfoundry} (R1/R2 $\rightarrow$ R4)
+        \subitem approaches the full implementation and code repair/execution problem, restricted to papers on LLM jailbreak attacks, 
+        by using a multi-agent system, which does iterative planning, implementation and fidelity checks.
+        The target for code is a module, that is compatible with JBF-LIB, which is a library by the authors, 
+        that sets a standard interface to produce attack benchmarks.
+        The authors' intent is not to assess the reproducibility of proposed jailbreaks. 
+        They are instead focusing on shortening the time between the publication of a jailbreak, 
+        and when mitigations can be tested, by automatically creating a benchmark to develop against.
+        Jailbreak Foundry does not qualify to be a reproducibility system, 
+        because it doesn't explicitly test the jailbreaks against the models used in the original paper.
+        However, I suspect that this would be a trivial extension to add.
+        The system can act both as R1 $\rightarrow$ R4 and R2 $\rightarrow$ R4, depending on whether existing code is available.
+    \item Automating Computational Reproducibility in Social Science\cite{shah2026} (R2 $\rightarrow$ R4)
+        \subitem approaches the code repair/execution problem in two ways: A prompt based workflow and an agent based workflow.
+        The prompt based workflow works by feeding code, error logs, and a prompt to an LLM.
+        The LLM then attempts a single shot repair which is then executed. This goes back to the beginning, with the new code and errors,
+        if the code fails to execute correctly.
+
+        The agent workflow uses commercial off the shelf coding agents, specifically OpenCode\cite{opencode} and Claude Code\cite{claudecode}.
+    \item Computational Reproducibility of R Code Supplements on OSF\cite{saju2025} (R2 $\rightarrow$ R4)
+        \subitem approaches the code repair/execution task with a light touch. It does not use AI, or modify code.
+        It only attempts to construct an environment where the code will run unmodified.
+        It then publishes the environment as a Docker image, along with the execution logs.
+    \item LockForge\cite{lockforge} (OR1)
+        \subitem restricts the OR1 problem to logic locking research in integrated circuits.
+        Logic locking refers to techniques for designing integrated circuits, that restrict functionality, 
+        unless the user is authorized. This is meant to prevent IP piracy, counterfeiting, malicious modification, 
+        and reverse engineering, among other concerns.
+        The multi-agent system consists of 5 stages: forethoughts, implementation, refinement loop, smoke tests, and validation.
+        Reproducibility is a part of the final validation. It works by measuring the fidelity of code execution on paper-specified benchmarks.
     \item Comparing Human-Only, AI-Assisted, and AI-Led Teams on Assessing Research Reproducibility in Quantitative Social Science\cite{bensch2025} (OR1*/OR2*)
         \subitem tests the effects on outcome reproducibility assessment, from human teams using AI, and human teams led by AI.
     \item ReplicatorAgent\cite[pages~5--6]{replicatorbench} (IR1/IR2)
         \subitem is the reference test subject for \hyperref[itm:replicatorbenchdesc]{ReplicatorBench}\cite{replicatorbench}.
         It's a multi-agent system, similar to others.
-        However, it has a novel option of forcing the agent to translate all non-Python scripts into python in order to run them.
+        However, it has a novel option of forcing the agent to translate all non-Python scripts into Python in order to run them.
         The rationale for this is that LLMs prefer working with, and are more proficient in, Python\cite{twist2026},
         so the authors hypothesize that forcing the agent to work in Python, will improve performance.
-    \item REPRO-Agent\cite[pages~9--]{reprobench} (OR2/AR2/IR2)
+    \item REPRO-Agent\cite[page~9]{reprobench} (OR2/AR2/IR2)
         \subitem is the default agent for REPRO-Bench\cite{reprobench}.
         It follows an organized template, which is based on successful reproducibility assessment cases to improve planning.
         Input-Output behaviour is discussed in the \hyperref[itm:reprobenchatbenchmarks]{benchmark section on REPRO-Bench}.
-    \item Sci-Reproducer\cite[pages~6--7]{scireplicatebench} (R1 $\rightarrow$ R2)
-        \subitem is the default agent for \hyperref[itm:scireplicatebenchdesc]{SciReplicate-Bench}\cite{scireplicatebench}.
+    \item PaperRepro (b)\cite{paperrepro} (OR2/AR2/IR2)\label{itm:paperreprodesc}
+        \subitem not to be confused with \hyperref[itm:li2026desc]{PaperRepro by Li et al.}\cite{li2026}, 
+        approaches the problem of assessing reproducibility of papers and available code, with a two stage, multi-agent system.
+        The system consists of an execution stage, and an evaluation stage.
+        A setup agent configures the environment and creates a plan for the reproduction attempt.
+        An execution agent follows the plan and runs the script it has written, which produces research artifacts.
+        In the evaluation stage, a scoring agent evaluates reproducibility, using the reproduced artifacts, 
+        the paper's reported results, and an execution summary. A report agent aggregates everything into a reproduction report.
+        The reason why all reproducibility levels are applicable, is because PaperRepro\cite{paperrepro} conforms to REPRO-Bench\cite{reprobench}, 
+        which requires the system to specify which level has been attained. See the discussion of REPRO-Bench
+        in the \hyperref[itm:reprobenchatbenchmarks]{benchmark section}.
     \item Reproscreener\cite{reproscreener} (IR2)
-       is a reproducibility assessment software tool.
-       It approximately has the same input-output behaviour as
-       an IR2 agent, and therefore complements well with LLM methods, as dissimilar redundancy.
+        is a reproducibility assessment software tool.
+        It approximately has the same input-output behaviour as
+        an IR2 agent, and therefore complements well with LLM methods, as dissimilar redundancy.
+    \item Artisan\cite{artisan} (OR2/OR4)
+        \subitem approaches the code repair/execution task, which they refer to as artifact evaluation, 
+        by using a single coding agent, that is guided by two judges.
+        One judge is an LLM that gives feedback on how well the agent's code represents the paper's methodology.
+        The other judge is entirely hand-coded, and compares the computed output from the coder's script, to that of the original artifact.
+        It gives a simple pass/fail for each value in the result. 
+        The system's preprocessing has obfuscated the results from the paper and other artifacts,
+        in order to prevent the agent from simply copying the results.
+        However, the authors had to implement even further measures to mitigate this to an acceptable level.
+        It is unclear whether this should be classified as OR2 or OR4, since the experimental data is required for it to operate. 
+        However, the idea is to produce a reproduction script, which doesn't depend on it.
+    \item Supporting Artifact Evaluation with LLMs\cite{heye2025} (OR4*)
+        \subitem restricts the OR1 problem to computer security papers. 
+        \subitem Partial automation of computer security reproduction.
        
 \end{enumerate}
 Some papers need significant modification to fit into the classification:
@@ -369,31 +527,31 @@ and some authors who have contributed to the field had slightly different proble
 This makes it difficult to compare performance across systems.
 Due to the differing problem statements, most papers primarily (and sometimes exclusively) develop their own dataset and scoring system.
 
-The same classification system, based on Gundersen 2021\cite{gundersen2021}, can be used to classify benchmarks for automated reproducibility systems.
+\hyperref[itm:classification]{The same classification system}, based on Gundersen 2021\cite{gundersen2021}, can be used to classify benchmarks for automated reproducibility systems.
 The classification is decided by which classes of systems the benchmark can test.
 
 \begin{enumerate} % TODO: Sort entries
     \item Paper2CodeBench\cite[pages~6--8]{paper2code} (R1 $\rightarrow$ R2)
         \subitem is the benchmark for Paper2Code\cite{paper2code}. Reproducibility is not their main focus, but they run a small evaluation on 10 papers with human judges, 
         and find that their system reproduces the papers 29.46\% of the time.
-        \subitem 90 papers from ICLR, ICML, and NeurIPS 2024, filtered to have code repositories smaller than 70 000 tokens, and an LLM ranking.
+        \subitem It consists of 90 papers from ICLR, ICML, and NeurIPS 2024, filtered to have code repositories smaller than 70 000 tokens, and by an LLM ranking.
         \subitem Evaluation is done with an LLM judge, both with and without the original repository as reference, 
         in addition to a human evaluation by the original paper's authors.
     \item Paper2Repo\cite[pages~7--8]{autop2c} (R1 $\rightarrow$ R2)
-        \subitem is only used by AutoP2C.
-        It consists of 8 papers. Covers training strategy optimisation, node classification, model compression, 
-        parameter-effecient fine-tuning, network pruning, and image classification.
+        \subitem is only used by \hyperref[itm:autop2cdesc]{AutoP2C}\cite{autop2c}.
+        It consists of 8 papers and covers training strategy optimisation, node classification, model compression, 
+        parameter-efficient fine-tuning, network pruning, and image classification.
         See \hyperref[itm:autop2cdesc]{AutoP2C}\cite{autop2c} in the auto-reproducibility system,
         for input-output behaviour.
-    \item PaperBench\cite{paperbench} (R1 $\rightarrow$ R4)
-        \subitem is a full implementation benchmark that requires %TODO: finish
-        \subitem It consists of 20 papers from ICML\cite{icml2024}, across 12 different ICML topics.
     \item SciReplicate-Bench\cite{scireplicatebench}\label{itm:scireplicatebenchdesc} (R1 $\rightarrow$ R2)
         \subitem benchmarks paper-to-code agents on 100 tasks from 36 NLP papers.
+    \item PaperBench\cite{paperbench} (R1 $\rightarrow$ R4)
+        \subitem is a full implementation benchmark.
+        \subitem It consists of 20 papers from ICML\cite{icml2024}, across 12 different ICML topics.
     \item ReplicationBench\cite{replicationbench} (R1 $\rightarrow$ R4)
         \subitem aims to benchmark agents on the full implementation task, on 20 astrophysics papers.
-        The agents are graded on answers to questions that require a various levels of implementation,
-        The tasks difficulty is measured on a logarithmic scale from 1 to 9, 
+        The agents are graded on answers to questions that require various levels of implementation.
+        The task's difficulty is measured on a logarithmic scale from 1 to 9, 
         based on an estimate of how long a human non-author domain expert would take to complete the task.
         1 corresponds to a few minutes. 9 corresponds to several weeks.
     \item ReproduceBench\cite[pages~5--8]{autoreproduce} (R1 $\rightarrow$ R4)
@@ -402,10 +560,10 @@ The classification is decided by which classes of systems the benchmark can test
         \subitem Evaluates whether the generated code accurately reflects the paper and code by the authors, using an LLM judge.
         \subitem Also evaluates whether the generated code reproduces the original result, using the original metric from the paper.
     \item AutoExperiment\cite{autoexperiment} (R1/R2 $\rightarrow$ R4)
-        is a benchmark which blurs the line between full implementation, and code repair/execution.
+        is a benchmark which blurs the line between full implementation and code repair/execution.
         This is an intentional feature, where the benchmark operator can choose a continuously varying starting point,
         between R1 and R2. The authors call their approach to accomplish this "progressive code masking".
-        The benchmark software is configured a integer $n$. It masks out $n$ function from the dataset, 
+        The benchmark software is configured with a integer $n$. It masks out $n$ functions from the dataset, 
         which means removing a function's implementation.
         Setting $n$ to 0 corresponds to an (R2 $\rightarrow$ R4), 
         since the code is passed along to the agent unaltered.
@@ -427,52 +585,52 @@ The classification is decided by which classes of systems the benchmark can test
         The benchmark has three difficulty levels:
         CORE-Bench-Easy, CORE-Bench-Medium, and CORE-Bench-Hard.
         The easy task does not conform to the classification scheme, 
-        because the agent only has to answer questions about the pre-existing code output
+        because the agent only has to answer questions about the pre-existing code output.
         The hard task conforms well to the R2 $\rightarrow$ R4 class, 
         if the question-answering is merely viewed as the judgement mechanism for how well the agent executed the code.
         The medium task also conforms to R2 $\rightarrow$ R4, but is easier, because the agent is handed a Dockerfile.
-        I have not classified CORE-Bench\cite{corebench} as a reproducibility assessment benchmark
-        \footnote{What I mean by this, is a benchmark that, for example, tests an OR2 system. Basically a benchmark of a benchmark for papers.},
-        because none of the task questions I could see in the \cite{corebenchgithub}{dataset on github} 
+        I have not classified CORE-Bench\cite{corebench} as a reproducibility assessment benchmark\footnote{What I mean by this, 
+        is a benchmark that, for example, tests an OR2 system. Basically a benchmark of a benchmark for papers.},
+        because none of the task questions I could see in the dataset\cite{corebenchgithub} on github
         asked the agent to assess whether any experiment was reproduced.
         The first task is close: "Report the average AUC score of Had using the CTGCN-C method on the UCI dataset."
         This question leaves the assessment for reproducibility to someone/something else.
     \item EnvBench\cite{envbench} (R2 $\rightarrow$ R4)
         \subitem is a benchmark for code repair/execution agents.
-        It only checks the agents capability to set up a correct execution environment.
+        It only checks the agent's capability to set up a correct execution environment.
         It encompasses 994 code repositories, 
         and uses only generic static analysis tools to judge performance,
-        which is what enable the size of the benchmark.
+        which is what enables the size of the benchmark.
     \item MMReview\cite{mmreview} (IR1)
         \subitem is a benchmark for automated peer review.
         Peer review is not a reproducibility assessment,
         but it fits the input-output behaviour of IR1,
-        since it is a judgment of paper quality.
+        since it is a judgement of paper quality.
         I've identified one (of potentially many) techniques from the 
         paper that are transferable to benchmarks for automated reproducibility assessment.
         The paper uses adverserially constructed inputs, 
         to test whether LLM agents can overcome their sycophantic tendencies\cite{liu2025}.
         This involves inserting fake strengths and weaknesses into papers before giving it to the agent.
     \item ReplicatorBench\cite{replicatorbench}\label{itm:replicatorbenchdesc} (IR1/IR2)
-        \subitem is one of few reproducibility assessment benchmark, 
+        \subitem is one of a handful of reproducibility assessment benchmarks, 
         that includes negative examples, and by that I mean irreproducible claims.
-        It is crucially important for an automatic assessment system, 
-        that it is able to confidently declare a paper irreproducible, when possible (and correct).
+        It is crucially important that an automatic assessment system is able to 
+        confidently declare a paper irreproducible, when it is possible (and correct to do so).
         Otherwise, irreproducible papers will be stuck in an in-between state,
         where it's unclear whether it is irreproducible, 
         or if the agent is not capable enough to reproduce it.
         This problem persists no matter how well the agent performs on benchmarks with only positive examples, 
         such as Artisan-Bench\cite[pages~9--17]{artisan}, 
-        because the possibility of out-of-distribution performance degradation is always possible.
+        because out-of-distribution performance degradation is always possible.
 
         ReplicatorBench doesn't test whether a system can reproduce the same outcome as the original study, with the same data.
         It aims to instead test whether the system can figure out 
-        if the paper's finding generalize to new equivalent experimental settings.
+        if the paper's findings generalize to new equivalent experimental settings.
         The agent is handed the new data by the benchmark, instead of having to produce it itself, 
         because the benchmark is focused on social science, 
         which is not a purely computational field.
     \item SocSciRepro-Bench\cite{socscireprobench} (IR2)
-        \subitem has as its goal to widen the coverage of that benchmarks on social science provides.
+        \subitem has as its goal, to widen the coverage of benchmarks on social science.
         It does so by including 221 tasks from 54 papers.
         The dataset covers four disciplines, 
         and has both confirmed reproducible and irreproducible papers.
@@ -495,27 +653,22 @@ The classification is decided by which classes of systems the benchmark can test
             A score of 2 indicates identifiable inconsistencies in the code that do not alter the paper’s major findings." (Interpretation reproducible)
             \item[3:] "there are minor issues at the display and reporting level, e.g., rounding errors." (Analysis reproducible)
             \item[4:] "major findings are fully reproducible." (Outcome reproducible)
+        \end{enumerate}
     \item Artisan-Bench\cite[pages~9--17]{artisan} (OR2/OR4)
         \subitem is only used by Artisan\cite{artisan}, and consists of 23 curated software engineering papers with available and evaluated artifacts. 
         The benchmark has examples in python, java, rust, scala, ocaml and bash.
-        \end{enumerate}
 \end{enumerate}
 
-\section{Statistics}
-Here are the statistics on how many systems end up fulfilling each classification. 
-Systems that fulfill multiple classes are counted multiple times.
-
-
-\section{Limitations} % TODO: write
+%\section{Limitations} % TODO: write
 
 \section{Conclusion}
-The literature for automatic reproducibility has, only recently, become extensive, but there are still gaps which should be filled.
+The literature for automatic reproducibility has, only recently, become extensive. However there are still gaps which should be filled.
 The plurality of the attention has gone to the paper to code problem, and much less attention has been given to fully automating
-reproducibility assessments. This is reasonable, given that writing code and, to a bigger extent, successfully running code is the 
-biggest obstacle with manual reproduction. %TODO [citation needed]
+reproducibility assessments (see \autoref{fig:classchart}). This is reasonable, given that writing code and, to a similar extent, 
+successfully running code is the biggest obstacle with manual reproduction.
 It is good then, that code repair/execution and full implementation has received a lot of attention, 
 and some full assessment systems exist for specialized research topics.
-However, I believe that fully automated, general computational reproducibility systems are within reach.
+However, I believe that fully automated and general computational reproducibility systems, that are as capable as current specialized systems, are within reach.
 
 \printbibliography
 
